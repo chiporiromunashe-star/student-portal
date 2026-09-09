@@ -3,12 +3,12 @@
 {% block content %}
 
 <div class="profile">
-  <img src="{% static 'images/profile-background-3.PNG' %}" alt="">
+  <img src="{% static 'images/profile-background-3.png' %}" alt="">
   <div class="profile-box">
     {% if teacher.teacher_profile_pic %}
     <img src="{{ teacher.teacher_profile_pic.url }}" alt="">
     {% else %}
-    <img src="{% static 'images/login-avatar.PNG' %}" alt="">
+    <img src="{% static 'images/login-avatar.png' %}" alt="">
     {% endif %}
     <div class="profile-details">
       <h1>{{ teacher.name }}</h1>
