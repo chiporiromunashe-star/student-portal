@@ -1,21 +1,39 @@
-.login-page body{
+
+html, body {
+  width: 100%;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
+  box-sizing: border-box;
   font-family: sans-serif;
 }
-nav{
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.login-page body {
+  margin: 0;
+  padding: 0;
+}
+
+nav {
   width: 100%;
   background: #00316b;
   margin-bottom: 0;
 }
-
 ul{
     width: 100%;
     margin: 0 auto;
     padding: 0;
     display: none;
     margin-bottom: 0;
+    position: absolute;
+    top: 100%;
+    left:0;
+    z-index: 9999;
     background: #00316b;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
 ul li{
@@ -568,3 +586,32 @@ ul li a
   height:75px;
   border-radius: 50%;
 }
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 90%;
+  max-width: 480px;
+  margin: 20px auto;
+  padding: 0;
+}
+
+.dashboard-container a, 
+.dashboard-container button {
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.student-card-wrapper {
+  position: relative;
+  width: 85%;
+  max-width: 420px;
+  margin: -25px auto 20px auto;
+  z-index: 10;
+  background-color: #0b2545;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+  text-align: center;
+}
+
