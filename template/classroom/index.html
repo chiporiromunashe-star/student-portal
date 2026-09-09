@@ -1,0 +1,98 @@
+{% extends 'classroom/base.html' %}
+{% load static %}
+{% block content %}
+
+{% if messages %}
+<div class="alert alert-primary alert-dismissible fade show" role="alert">
+  {% for message in messages %}
+    <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
+  {% endfor %}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+
+<div class="banner">
+      <img src="{% static 'images/first.PNG' %}" alt="">
+      <div class="content">
+        <h1>CHIPORIRO HIGH SCHOOL</h1>
+        <p>Were Engineers are made</p>
+      </div>
+    </div>
+
+    <!--<div class="about">
+      <h1>Vision</h1>
+      <p>To be a premier incubator of inventive minds, shaping the next generation of ethical scientists, engineers and technological leaders who engineer practical solutions.</p>
+    </div>-->
+
+    <div class="use-content">
+      <h1>Mission</h1>
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="box">
+            <div class="imgBx">
+              <img src="{% static 'images/teacher.PNG' %}" alt="">
+            </div>
+            <div class="content">
+              <h3>TEACHER COMMITMENTS</h3>
+              <ol>
+                <li>Deliver Hands-On , Applied learning.</li>
+                <li>Foster an Iterative Mindset.</li>
+                <li>Intergrate Cross-Disciplinary Stem.</li>
+                <li>Anchor Concepts in Real-World Context.</li>
+                <li>Instill Data-Driven Rigor.</li>
+                <li>Champion Ethical Stewardship.</li>
+                <li>Facilitate Team-Based Engineering.</li>
+                <li> Maintain Continuous Technical Growth.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="box">
+            <div class="imgBx">
+              <img src="{% static 'images/homeimg.PNG' %}" alt="">
+            </div>
+            <div class="content">
+              <h3>STUDENT COMMITMENTS</h3>
+              <ol>
+                <li>Embrace Active Discovery.</li>
+                <li> Master the Iterative Process.</li>
+                <li>Apply Scientific & Mathematical Rigor. )</li>
+                <li> Cultivate Technical Curiosity. </li>
+                <li>Cultivate Technical Curiosity.</li>
+                <li> Collaborate as an Engineering Team.</li>
+              </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!--<div class="research">
+      <div class="row">
+        <div class="col-md-4">
+          <img src="{% static 'images/mastery-based-education.PNG' %}" alt="">
+        </div>
+        <div class="col-md-8">
+          <div class="digital-content">
+            <h2>Digital Learning</h2>
+            <br>
+            <p>Student portal provides all facilities that is needed for improvising digital learning.</p>
+          </div>
+        </div>
+      </div>
+    </div>-->
+
+    <div class="social">
+      <h1>Are you ready to advance what's possible in education.</h1>
+      <h3>Then connect with us on social media.</h3>
+      <a class="social-icon" href="#"><i class="fab fa-facebook-f"></i></a>
+      <a class="social-icon" href="#"><i class="fab fa-twitter"></i></a>
+      <a class="social-icon" href="#"><i class="fab fa-instagram"></i></a>
+      <a class="social-icon" href="#"><i class="fab fa-google"></i></a>
+      <a class="social-icon" href="#"><i class="fab fa-linkedin-in"></i></a>
+    </div>
+
+{% endblock %}
