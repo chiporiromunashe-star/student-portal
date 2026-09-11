@@ -2,42 +2,75 @@
 {% load static %}
 {% block content %}
 
+<div class="signup-page-wrapper">
+    <div class="signup-card">
+      {% if registered %}
+      <h2>Thank you for registering!</h2>
+      <p class="subtitle"><a href="{% url 'classroom:login' %}">Proceed to Log In</a></p>
+      {% else %}
+      <h2>Sign Up as a Teacher</h2>
+      <p class="subtitle">Already have an account? <a href="{% url 'classroom:login' %}">Log In</a></p>
 
-<div class="login-page">
-  <img src="{% static 'images/login-background.png' %}" alt="">
-  <div class="student-signup-form">
-    {% if registered %}
-    <h1>Thank you for registering.</h1>
-    {% else %}
-    <h1>Sign Up as a teacher.</h1>
-    
+      <form method="post" novalidate>
+        {% csrf_token %}
 
-    <form method="post">
-      {% csrf_token %}
+        <!-- Teacher Profile Form Errors -->
+        {% if teacher_profile_form.non_field_errors %}
+            <div class="error-banner">{{ teacher_profile_form.non_field_errors }}</div>
+        {% endif %}
 
-      {{ teacher_profile_form.non_field_errors }}
+        <div class="form-group">
+            <label for="{{ teacher_profile_form.name.id_for_label }}">Name *</label>
+            {{ teacher_profile_form.name }}
+            {% for error in teacher_profile_form.name.errors %}
+                <span class="error-text">{{ error }}</span>
+            {% endfor %}
+        </div>
 
-      <p><label >{{ teacher_profile_form.name.label_tag }}</label>{{ teacher_profile_form.name }}</p>
-      <p> <label for="">{{ teacher_profile_form.subject_name.label_tag }}</label>  {{ teacher_profile_form.subject_name }}</p>
-      <p> <label for="">{{ teacher_profile_form.phone.label_tag }}</label> {{ teacher_profile_form.phone }}</p>
-      <p> <label for="">{{ teacher_profile_form.email.label_tag }}</label>{{ teacher_profile_form.email }}</p>
+        <div class="form-group">
+            <label for="{{ teacher_profile_form.subject_name.id_for_label }}">Subject Name *</label>
+            {{ teacher_profile_form.subject_name }}
+            {% for error in teacher_profile_form.subject_name.errors %}
+                <span class="error-text">{{ error }}</span>
+            {% endfor %}
+        </div>
 
+        <div class="form-group">
+            <label for="{{ teacher_profile_form.phone.id_for_label }}">Phone *</label>
+            {{ teacher_profile_form.phone }}
+            {% for error in teacher_profile_form.phone.errors %}
+                <span class="error-text">{{ error }}</span>
+            {% endfor %}
+        </div>
 
-      {{ user_form.non_field_errors }}
+        <div class="form-group">
+            <label for="{{ teacher_profile_form.email.id_for_label }}">Email *</label>
+            {{ teacher_profile_form.email }}
+            {% for error in teacher_profile_form.email.errors %}
+                <span class="error-text">{{ error }}</span>
+            {% endfor %}
+        </div>
 
-      <p> <label for="">{{ user_form.username.label_tag }}</label>{{ user_form.username }}</p>
-      <p> {{ user_form.username.help_text }}</p>
-      <p> <label for="">{{ user_form.password1.label_tag }}</label>{{ user_form.password1 }}</p>
-      <p> {{ user_form.password1.help_text }} </p>
-      <p> <label for="">{{ user_form.password2.label_tag }}</label>{{ user_form.password2 }}</p>
-      <p> {{ user_form.password2.help_text }} </p>
-      <input type="submit" name="" value="Sign Up">
-    </form>
-    <a href="{% url 'classroom:login' %}">Already have an account.</a>
-    {% endif %}
-  </div>
-</div>
+        <!-- User Form Errors -->
+        {% if user_form.non_field_errors %}
+            <div class="error-banner">{{ user_form.non_field_errors }}</div>
+        {% endif %}
 
+        <div class="form-group">
+            <label for="{{ user_form.username.id_for_label }}">Username *</label>
+            {{ user_form.username }}
+            {% if user_form.username.help_text %}
+                <small class="help-text">{{ user_form.username.help_text }}</small>
+            {% endif %}
+            {% for error in user_form.username.errors %}
+                <span class="error-text">{{ error }}</span>
+            {% endfor %}
+        </div>
 
+        <div class="form-group">
+            <label for="{{ user_form.password1.id_for_label }}">Password *</label>
+            {{ user_form.password1 }}
+            {% if user_form.password1.help_text %}
+                <small class="help-text">{{ user_form.password1.help_text }}</small>
+            {% endif %}
 
-{% endblock %}
