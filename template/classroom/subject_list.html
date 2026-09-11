@@ -1,0 +1,218 @@
+{% extends 'classroom/base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- BACK TO DASHBOARD BUTTON -->
+<div style="margin: 16px 0 20px 0;">
+    <a href="{% url 'classroom:student_dashboard' %}" style="text-decoration: none; color: #0284c7; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 6px;">
+        &larr; Back to Dashboard
+    </a>
+</div>
+
+<div class="dashboard-wrapper">
+    <!-- HEADER -->
+    <div class="dashboard-header-card">
+        <h1>Secondary School Subjects</h1>
+        <p>Select or view your enrolled subjects across Form 1 to Form 4 syllabus.</p>
+    </div>
+
+    <!-- FORMS GRID (1 TO 4) -->
+    <div class="forms-grid">
+        
+        <!-- FORM 1 -->
+        <div class="form-card">
+            <div class="form-card-header">
+                <h2>Form 1 Syllabus</h2>
+                <span class="form-badge">Junior Secondary</span>
+            </div>
+            <ul class="subject-list">
+                <li><span class="sub-code">ENG101</span> English Language</li>
+                <li><span class="sub-code">MAT101</span> Mathematics</li>
+                <li><span class="sub-code">CSC101</span> Combined Science</li>
+                <li><span class="sub-code">HST101</span> Heritage Studies</li>
+                <li><span class="sub-code">GEO101</span> Geography</li>
+                <li><span class="sub-code">AGR101</span> Agriculture</li>
+            </ul>
+            <button class="select-btn">Select Form 1 Subjects</button>
+        </div>
+
+        <!-- FORM 2 -->
+        <div class="form-card">
+            <div class="form-card-header">
+                <h2>Form 2 Syllabus</h2>
+                <span class="form-badge">Junior Secondary</span>
+            </div>
+            <ul class="subject-list">
+                <li><span class="sub-code">ENG201</span> English Language</li>
+                <li><span class="sub-code">MAT201</span> Mathematics</li>
+                <li><span class="sub-code">CSC201</span> Combined Science</li>
+                <li><span class="sub-code">HST201</span> Heritage Studies</li>
+                <li><span class="sub-code">GEO201</span> Geography</li>
+                <li><span class="sub-code">AGR201</span> Agriculture</li>
+            </ul>
+            <button class="select-btn">Select Form 2 Subjects</button>
+        </div>
+
+        <!-- FORM 3 -->
+        <div class="form-card">
+            <div class="form-card-header">
+                <h2>Form 3 Syllabus</h2>
+                <span class="form-badge level">O-Level</span>
+            </div>
+            <ul class="subject-list">
+                <li><span class="sub-code">ENG301</span> English Language</li>
+                <li><span class="sub-code">MAT301</span> Mathematics</li>
+                <li><span class="sub-code">CSC301</span> Combined Science</li>
+                <li><span class="sub-code">HST301</span> Heritage Studies</li>
+                <li><span class="sub-code">GEO301</span> Geography</li>
+                <li><span class="sub-code">COM301</span> Commerce / Principles of Accounts</li>
+            </ul>
+            <button class="select-btn">Select Form 3 Subjects</button>
+        </div>
+
+        <!-- FORM 4 -->
+        <div class="form-card">
+            <div class="form-card-header">
+                <h2>Form 4 Syllabus</h2>
+                <span class="form-badge level">O-Level Final</span>
+            </div>
+            <ul class="subject-list">
+                <li><span class="sub-code">ENG401</span> English Language</li>
+                <li><span class="sub-code">MAT401</span> Mathematics</li>
+                <li><span class="sub-code">CSC401</span> Combined Science</li>
+                <li><span class="sub-code">HST401</span> Heritage Studies</li>
+                <li><span class="sub-code">GEO401</span> Geography</li>
+                <li><span class="sub-code">COM401</span> Commerce / Principles of Accounts</li>
+            </ul>
+            <button class="select-btn">Select Form 4 Subjects</button>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .dashboard-wrapper {
+        background-color: #f8fafc;
+        min-height: calc(100vh - 100px);
+        padding: 20px 0;
+        box-sizing: border-box;
+        max-width: 1100px;
+        margin: 0 auto;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    .dashboard-header-card {
+        background: #0f172a;
+        color: #ffffff;
+        padding: 28px 32px;
+        border-radius: 10px;
+        margin-bottom: 24px;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+    }
+    .dashboard-header-card h1 {
+        margin: 0 0 6px 0;
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+    .dashboard-header-card p {
+        margin: 0;
+        color: #94a3b8;
+        font-size: 14px;
+    }
+    .forms-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+        gap: 24px;
+    }
+    @media (max-width: 540px) {
+        .forms-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    .form-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 24px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .form-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+    }
+    .form-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #f1f5f9;
+        padding-bottom: 12px;
+        margin-bottom: 16px;
+    }
+    .form-card-header h2 {
+        margin: 0;
+        font-size: 18px;
+        color: #0f172a;
+        font-weight: 700;
+    }
+    .form-badge {
+        background-color: #eff6ff;
+        color: #1d4ed8;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .form-badge.level {
+        background-color: #fef2f2;
+        color: #b91c1c;
+    }
+    .subject-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 20px 0;
+    }
+    .subject-list li {
+        padding: 10px 12px;
+        margin-bottom: 8px;
+        background-color: #f8fafc;
+        border: 1px solid #f1f5f9;
+        border-radius: 6px;
+        font-size: 14px;
+        color: #334155;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .sub-code {
+        font-size: 11px;
+        background: #e2e8f0;
+        color: #475569;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-weight: 700;
+    }
+    .select-btn {
+        width: 100%;
+        background-color: #0f172a;
+        color: #ffffff;
+        border: none;
+        padding: 12px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+    .select-btn:hover {
+        background-color: #0284c7;
+    }
+</style>
+
+{% endblock %}
