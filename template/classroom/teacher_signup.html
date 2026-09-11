@@ -14,7 +14,6 @@
       <form method="post" novalidate>
         {% csrf_token %}
 
-        <!-- Teacher Profile Form Errors -->
         {% if teacher_profile_form.non_field_errors %}
             <div class="error-banner">{{ teacher_profile_form.non_field_errors }}</div>
         {% endif %}
@@ -51,7 +50,6 @@
             {% endfor %}
         </div>
 
-        <!-- User Form Errors -->
         {% if user_form.non_field_errors %}
             <div class="error-banner">{{ user_form.non_field_errors }}</div>
         {% endif %}
@@ -73,4 +71,130 @@
             {% if user_form.password1.help_text %}
                 <small class="help-text">{{ user_form.password1.help_text }}</small>
             {% endif %}
+            {% for error in user_form.password1.errors %}
+                <span class="error-text">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ user_form.password2.id_for_label }}">Confirm Password *</label>
+            {{ user_form.password2 }}
+            {% if user_form.password2.help_text %}
+                <small class="help-text">{{ user_form.password2.help_text }}</small>
+            {% endif %}
+            {% for error in user_form.password2.errors %}
+                <span class="error-text">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <button type="submit" class="submit-btn">✓ Sign Up</button>
+      </form>
+      {% endif %}
+    </div>
+</div>
+
+<style>
+    .signup-page-wrapper {
+        background: linear-gradient(135deg, #e0f2fe, #f0fdf4);
+        min-height: calc(100vh - 60px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        box-sizing: border-box;
+        width: 100%;
+    }
+    .signup-card {
+        background: #ffffff;
+        width: 100%;
+        max-width: 440px;
+        padding: 32px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e2e8f0;
+    }
+    .signup-card h2 {
+        margin: 0 0 6px 0;
+        font-size: 24px;
+        color: #0f172a;
+        text-align: center;
+        font-weight: 700;
+    }
+    .subtitle {
+        text-align: center;
+        color: #64748b;
+        font-size: 14px;
+        margin-bottom: 24px;
+    }
+    .subtitle a {
+        color: #0284c7;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    .form-group {
+        margin-bottom: 16px;
+    }
+    .form-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 6px;
+    }
+    .form-group input {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        font-size: 14px;
+        box-sizing: border-box;
+        outline: none;
+        transition: all 0.2s;
+        color: #0f172a;
+        background-color: #fff;
+    }
+    .form-group input:focus {
+        border-color: #0ea5e9;
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+    }
+    .help-text {
+        display: block;
+        font-size: 11.5px;
+        color: #64748b;
+        margin-top: 4px;
+    }
+    .error-text {
+        display: block;
+        color: #dc2626;
+        font-size: 12px;
+        font-weight: 500;
+        margin-top: 4px;
+    }
+    .error-banner {
+        background: #fee2e2;
+        color: #991b1b;
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 13px;
+        margin-bottom: 16px;
+    }
+    .submit-btn {
+        width: 100%;
+        background: #0ea5e9;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 6px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 8px;
+        transition: background 0.2s;
+    }
+    .submit-btn:hover {
+        background: #0284c7;
+    }
+</style>
+
+{% endblock %}
 
