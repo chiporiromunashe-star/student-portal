@@ -452,3 +452,7 @@ def change_password(request):
         args = {'form':form}
         return render(request,'classroom/change_password.html',args)
 
+
+@login_required
+def student_dashboard(request):
+    return render(request, 'classroom/student_dashboard.html')
