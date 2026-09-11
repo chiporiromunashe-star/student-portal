@@ -105,8 +105,6 @@ def user_login(request):
         return render(request, 'classroom/login.html', {})
 
 
-    else:
-        return render(request,'classroom/login.html',{})
 
 ## logout view.
 @login_required
