@@ -15,9 +15,9 @@
     <div class="stats-grid">
         <!-- CARD 1: MARKS -->
         {% if user.Student %}
-        <a href="{% url 'classroom:student_allmarks_list' pk=user.Student.pk %}" class="stat-card-link">
+        <a href="{% url 'classroom:all_marks_list' pk=user.Student.pk %}" class="stat-card-link">
         {% else %}
-        <a href="#" class="stat-card-link">
+        <a href="#" class="stat-card-link" onclick="alert('No student profile associated with this account.'); return false;">
         {% endif %}
             <div class="stat-card hover-effect">
                 <span class="stat-label">MARKS & GRADES</span>
