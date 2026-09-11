@@ -81,27 +81,30 @@ def SignUp(request):
     return render(request,'classroom/signup.html',{})
 
 ## login view.
+## login view.
 def user_login(request):
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        user = authenticate(username=username,password=password)
+        user = authenticate(username=username, password=password)
 
         if user:
             if user.is_active:
-                login(request,user)
-                if getattr(user, 'is_student', False):
+                login(request, user)
+                is_student_user = getattr(user, 'is_student', False) or hasattr(user, 'student') or hasattr(user, 'Student')
+                if is_student_user:
                     return redirect('classroom:student_dashboard')
                 return HttpResponseRedirect(reverse('home'))
-
-
             else:
                 return HttpResponse("Account not active")
-
         else:
             messages.error(request, "Invalid Details")
             return redirect('classroom:login')
+    else:
+        return render(request, 'classroom/login.html', {})
+
+
     else:
         return render(request,'classroom/login.html',{})
 
