@@ -460,3 +460,6 @@ def change_password(request):
 @login_required
 def student_dashboard(request):
     return render(request, 'classroom/student_dashboard.html')
+  @login_required
+def subject_list(request):
+    return render(request, 'classroom/subject_list.html')
