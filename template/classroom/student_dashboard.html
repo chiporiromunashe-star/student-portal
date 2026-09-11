@@ -45,23 +45,33 @@
         </a>
     </div>
 
-    <div class="dashboard-card">
-        <h2>Recent Announcements & Notices</h2>
-        <ul class="announcement-list">
-            <li>
-                <strong>Mid-Term Examination Timetable Released:</strong> 
-                Check your examination portal for room allocations starting next Monday.
-            </li>
-            <li>
-                <strong>Library Extended Hours:</strong> 
-                The main campus library will remain open until 22:00 during revision week.
-            </li>
-            <li>
-                <strong>Portal Maintenance Notice:</strong> 
-                Scheduled server maintenance this Saturday from 01:00 to 03:00 CAT.
-            </li>
-        </ul>
-    </div>
+   <!-- ANNOUNCEMENTS & NOTICES CARD -->
+    {% if student %}
+    <a href="{% url 'classroom:class_notice' pk=student.pk %}" class="stat-card-link">
+    {% else %}
+    <a href="#" class="stat-card-link" onclick="alert('No student profile associated with this account.'); return false;">
+    {% endif %}
+        <div class="dashboard-card hover-effect">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; margin-bottom: 16px;">
+                <h2 style="border: none; padding: 0; margin: 0;">Recent Announcements & Notices</h2>
+                <span class="stat-subtext muted" style="color: #0284c7; font-weight: 600;">View class notices &rarr;</span>
+            </div>
+            <ul class="announcement-list">
+                <li>
+                    <strong>Mid-Term Examination Timetable Released:</strong> 
+                    Check your examination portal for room allocations starting next Monday.
+                </li>
+                <li>
+                    <strong>Library Extended Hours:</strong> 
+                    The main campus library will remain open until 22:00 during revision week.
+                </li>
+                <li>
+                    <strong>Portal Maintenance Notice:</strong> 
+                    Scheduled server maintenance this Saturday from 01:00 to 03:00 CAT.
+                </li>
+            </ul>
+        </div>
+    </a>
 </div>
 
 <style>
