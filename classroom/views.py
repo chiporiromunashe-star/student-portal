@@ -91,7 +91,10 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request,user)
-                return HttpResponseRedirect(reverse('home'))
+              if getattr(user, 'is_student', False):
+                 return redirect('classroom:student_dashboard')
+              return HttpResponseRedirect(reverse('home'))
+
 
             else:
                 return HttpResponse("Account not active")
