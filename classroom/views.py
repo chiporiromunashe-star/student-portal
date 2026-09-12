@@ -484,7 +484,7 @@ def subject_list(request):
 @login_required
 def teacher_dashboard(request):
     return render(request, 'classroom/teacher_dashboard.html')
- @login_required
+@login_required
 def account_view(request):
     if request.method == 'POST' and 'update_profile' in request.POST:
         user = request.user
