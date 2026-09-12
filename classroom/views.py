@@ -484,3 +484,26 @@ def subject_list(request):
 @login_required
 def teacher_dashboard(request):
     return render(request, 'classroom/teacher_dashboard.html')
+ @login_required
+def account_view(request):
+    if request.method == 'POST' and 'update_profile' in request.POST:
+        user = request.user
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        user.email = request.POST.get('email')
+        
+        # Handle phone or custom fields if saved on the user model
+        if hasattr(user, 'phone'):
+            user.phone = request.POST.get('phone')
+            
+        # Handle profile picture upload if your model supports it
+        if 'profile_picture' in request.FILES:
+            user.profile_picture = request.FILES['profile_picture']
+            
+        user.save()
+        messages.success(request, 'Your account has been updated successfully!')
+        return redirect('classroom:account')
+        
+    return render(request, 'classroom/account.html')
+
+
