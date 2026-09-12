@@ -37,6 +37,22 @@ urlpatterns =[
     path('dashboard/student/', views.student_dashboard, name='student_dashboard'),
     path('subjects/', views.subject_list, name='subject_list'),
     path('dashboard/teacher/', views.teacher_dashboard, name='teacher_dashboard'),
+    path('signup/', views.SignUp, name="signup"),
+    path('signup/student_signup/', views.StudentSignUp, name="StudentSignUp"),
+    path('signup/teacher_signup/', views.TeacherSignUp, name="TeacherSignup"),
+    path('login/', views.user_login, name="login"),
+    path('logout/', views.user_logout, name="logout"),
+    
+    # ADD THIS LINE FOR THE ACCOUNT PAGE:
+    path('account/', views.account_view, name="account"),
+    
+    path('student/<int:pk>/', views.StudentDetailview.as_view(), name="student_detail"),
+    path('teacher/<int:pk>/', views.TeacherDetailview.as_view(), name="teacher_detail"),
+    path('update/student/<int:pk>/', views.StudentUpdateview, name="student_update"),
+    path('update/teacher/<int:pk>/', views.TeacherUpdateview, name="teacher_update"),
+    path('student/<int:pk>/enter_marks', views.add_marks, name="enter_marks"),
+    path('student/<int:pk>/marks_list', views.student_marks_list, name="student_marks_list"),
+    path('marks/<int:pk>/update', views.update_marks, name="update_marks"),
 
     
 
