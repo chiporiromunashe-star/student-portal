@@ -16,6 +16,13 @@ class User(AbstractUser):
     is_teacher = models.BooleanField(default=False)
 
 
+class Subject(models.Model):
+    name = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.name
+
+
 class Student(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True,related_name='Student')
     name=models.CharField(max_length=250)
@@ -23,6 +30,7 @@ class Student(models.Model):
     email = models.EmailField(max_length=254)
     phone = models.IntegerField()
     student_profile_pic = models.ImageField(upload_to="classroom/student_profile_pic",blank=True)
+    subjects_enrolled = models.ManyToManyField(Subject, blank=True, related_name='enrolled_students')
 
     def get_absolute_url(self):
         return reverse('classroom:student_detail',kwargs={'pk':self.pk})
@@ -36,7 +44,8 @@ class Student(models.Model):
 class Teacher(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True,related_name='Teacher')
     name = models.CharField(max_length=250)
-    subject_name = models.CharField(max_length=250)
+    subject_name = models.CharField(max_length=250) # Kept for backward compatibility if needed
+    subjects_taught = models.ManyToManyField(Subject, blank=True, related_name='teaching_teachers')
     email = models.EmailField(max_length=254)
     phone = models.IntegerField()
     teacher_profile_pic = models.ImageField(upload_to="classroom/teacher_profile_pic",blank=True)
@@ -107,6 +116,7 @@ class ClassNotice(models.Model):
 class ClassAssignment(models.Model):
     student = models.ManyToManyField(Student,related_name='student_assignment')
     teacher = models.ForeignKey(Teacher,related_name='teacher_assignment',on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, related_name='assignments', on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now=True)
     assignment_name = models.CharField(max_length=250)
     assignment = models.FileField(upload_to='assignments')
@@ -129,3 +139,4 @@ class SubmitAssignment(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
