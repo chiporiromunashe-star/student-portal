@@ -44,23 +44,31 @@
   </head>
   <body>
 
-    <nav>
+     <nav>
       <div class="toggle">
         <a href="{% url 'home' %}">CHIPORIRO HIGH SCHOOL</a>
         
-        <!-- Direct Account Link -->
-        {% if user.is_authenticated %}
-            <a href="{% url 'classroom:account' %}" style="color: inherit; text-decoration: none; padding-right: 15px;">
-                <i class="fa fa-bars"></i>
-            </a>
-        {% else %}
-            <a href="{% url 'classroom:login' %}" style="color: inherit; text-decoration: none; padding-right: 15px;">
-                <i class="fa fa-bars"></i>
-            </a>
+        <!-- Only show the icon if the user is NOT on the login page -->
+        {% if request.resolver_match.url_name != 'login' %}
+            {% if user.is_authenticated %}
+                
+                <!-- If on the account page, make the icon go back/close -->
+                {% if request.resolver_match.url_name == 'account' %}
+                    <a href="javascript:history.back()" style="color: inherit; text-decoration: none; padding-right: 15px;">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                <!-- Otherwise, make the icon open the account page -->
+                {% else %}
+                    <a href="{% url 'classroom:account' %}" style="color: inherit; text-decoration: none; padding-right: 15px;">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                {% endif %}
+                
+            {% endif %}
         {% endif %}
       </div>
     </nav>
-    
+
     {% block content %}
     {% endblock %}
 
