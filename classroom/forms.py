@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from classroom.models import User,Teacher,Student,StudentMarks,MessageToTeacher,ClassNotice,ClassAssignment,SubmitAssignment
+from classroom.models import User, Teacher, Student, Subject, StudentMarks, MessageToTeacher, ClassNotice, ClassAssignment, SubmitAssignment
 from django.db import transaction
 
 ## User Login Form (Applied in both student and teacher login)
@@ -13,11 +13,11 @@ class UserForm(UserCreationForm):
                 'password1': forms.PasswordInput(attrs={'class':'answer'}),
                 'password2': forms.PasswordInput(attrs={'class':'answer'}),
                 }
-        
-## Teacher Registration Form 
+       
+## Teacher Registration Form
 class TeacherProfileForm(forms.ModelForm):
     class Meta():
-        model =  Teacher
+        model = Teacher
         fields = ['name','subject_name','phone','email']
         widgets = {
                 'name': forms.TextInput(attrs={'class':'answer'}),
@@ -32,10 +32,17 @@ class TeacherProfileUpdateForm(forms.ModelForm):
         model = Teacher
         fields = ['name','subject_name','email','phone','teacher_profile_pic']
 
+## Teacher Subject Selection Form
+class TeacherSubjectForm(forms.ModelForm):
+    class Meta():
+        model = Teacher
+        fields = ['subjects_taught']
+        widgets = {'subjects_taught': forms.CheckboxSelectMultiple()}
+
 ## Student Registration Form
 class StudentProfileForm(forms.ModelForm):
     class Meta():
-        model =  Student
+        model = Student
         fields = ['name','roll_no','phone','email']
         widgets = {
                 'name': forms.TextInput(attrs={'class':'answer'}),
@@ -49,7 +56,14 @@ class StudentProfileUpdateForm(forms.ModelForm):
     class Meta():
         model = Student
         fields = ['name','roll_no','email','phone','student_profile_pic']
-        
+
+## Student Subject Selection Form
+class StudentSubjectForm(forms.ModelForm):
+    class Meta():
+        model = Student
+        fields = ['subjects_enrolled']
+        widgets = {'subjects_enrolled': forms.CheckboxSelectMultiple()}
+       
 ## Form for uploading marks and also for updating it.
 class MarksForm(forms.ModelForm):
     class Meta():
@@ -68,14 +82,22 @@ class NoticeForm(forms.ModelForm):
         model = ClassNotice
         fields = ['message']
 
-## Form for uploading or updating assignment (teachers only)       
+## Form for uploading or updating assignment (teachers only)      
 class AssignmentForm(forms.ModelForm):
     class Meta():
         model = ClassAssignment
-        fields = ['assignment_name','assignment']
+        fields = ['subject', 'assignment_name', 'assignment']
+
+    def __init__(self, *args, **kwargs):
+        teacher = kwargs.pop('teacher', None)
+        super().__init__(*args, **kwargs)
+        if teacher:
+            # Restrict choices to subjects this teacher teaches
+            self.fields['subject'].queryset = teacher.subjects_taught.all()
 
 ## Form for submitting assignment (Students only)        
 class SubmitForm(forms.ModelForm):
     class Meta():
         model = SubmitAssignment
         fields = ['submit']
+
