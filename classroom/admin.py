@@ -1,6 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User, Student, StudentMarks, Teacher, StudentsInClass
+from django.contrib import admin
+from .models import Subject
+
+
 
 # Prevent "AlreadyRegistered" error for User
 try:
@@ -12,6 +16,7 @@ except admin.sites.NotRegistered:
 admin.site.register(User, UserAdmin)
 
 # Register School Models
+admin.site.register(Subject)
 admin.site.register(Student)
 admin.site.register(StudentMarks)
 admin.site.register(Teacher)
