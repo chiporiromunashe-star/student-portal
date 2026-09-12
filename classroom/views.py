@@ -476,6 +476,18 @@ def change_password(request):
 
 
 @login_required
+def student_dashboard(request):
+    return render(request, 'classroom/student_dashboard.html')
+
+@login_required
+def subject_list(request):
+    return render(request, 'classroom/subject_list.html')
+
+@login_required
+def teacher_dashboard(request):
+    return render(request, 'classroom/teacher_dashboard.html')
+
+@login_required
 def account_view(request):
     user = request.user
     
@@ -517,6 +529,7 @@ def account_view(request):
         
     # Pass the 'profile' context variable to the template so you can render phone and pictures
     return render(request, 'classroom/account.html', {'profile': profile})
+e})
 
 
 
