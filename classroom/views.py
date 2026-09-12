@@ -81,7 +81,6 @@ def SignUp(request):
     return render(request,'classroom/signup.html',{})
 
 ## login view.
-## login view.
 def user_login(request):
     if request.method == "POST":
         username = request.POST.get('username')
@@ -92,10 +91,16 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
+                
                 is_student_user = getattr(user, 'is_student', False) or hasattr(user, 'student') or hasattr(user, 'Student')
+                is_teacher_user = getattr(user, 'is_teacher', False) or hasattr(user, 'teacher') or hasattr(user, 'Teacher')
+
                 if is_student_user:
                     return redirect('classroom:student_dashboard')
-                return HttpResponseRedirect(reverse('home'))
+                elif is_teacher_user:
+                    return redirect('classroom:teacher_dashboard')
+                else:
+                    return redirect('classroom:teacher_dashboard')
             else:
                 return HttpResponse("Account not active")
         else:
@@ -103,6 +108,8 @@ def user_login(request):
             return redirect('classroom:login')
     else:
         return render(request, 'classroom/login.html', {})
+
+
 
 
 
