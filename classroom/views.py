@@ -372,19 +372,30 @@ def upload_assignment(request):
         form = AssignmentForm()
     return render(request,'classroom/upload_assignment.html',{'form':form,'assignment_uploaded':assignment_uploaded})
 
-## Students getting the list of all the assignments uploaded by their teacher.
+# students getting the list of all the assignments uploaded by their teacher.
 @login_required
 def class_assignment(request):
-    student = request.user.Student
-    assignment = SubmitAssignment.objects.filter(student=student)
-    assignment_list = [x.submitted_assignment for x in assignment]
-    return render(request,'classroom/class_assignment.html',{'student':student,'assignment_list':assignment_list})
+    student = getattr(request.user, 'Student', None) or getattr(request.user, 'student', None)
+    
+    if student:
+        assignment = SubmitAssignment.objects.filter(student=student)
+        assignment_list = [x.submitted_assignment for x in assignment]
+    else:
+        student = None
+        assignment_list = []
 
-## List of all the assignments uploaded by the teacher himself.
+    return render(request, 'classroom/class_assignment.html', {
+        'student': student,
+        'assignment_list': assignment_list
+    })
+
+# of all the assignments uploaded by the teacher himself.
 @login_required
 def assignment_list(request):
-    teacher = request.user.Teacher
-    return render(request,'classroom/assignment_list.html',{'teacher':teacher})
+    teacher = getattr(request.user, 'Teacher', None) or getattr(request.user, 'teacher', None)
+    return render(request, 'classroom/assignment_list.html', {'teacher': teacher})
+
+
 
 ## For updating the assignments later.
 @login_required
