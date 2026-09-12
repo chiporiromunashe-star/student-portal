@@ -463,3 +463,6 @@ def student_dashboard(request):
 @login_required
 def subject_list(request):
     return render(request, 'classroom/subject_list.html')
+@login_required
+def teacher_dashboard(request):
+    return render(request, 'classroom/teacher_dashboard.html')
