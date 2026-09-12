@@ -11,6 +11,12 @@
     <div class="overview-box">
         <p><strong>Overview:</strong> Quick summary of your current academic standing, enrolled subjects, and upcoming task deadlines.</p>
     </div>
+    
+<div class="card my-3 p-3">
+    <h4>My Subjects</h4>
+    <p>View or modify your chosen subjects for the semester.</p>
+    <a href="{% url 'classroom:student_subjects' %}" class="btn btn-primary">Update Enrolled Subjects</a>
+</div>
 
     <div class="stats-grid">
         <!-- CARD 1: MARKS -->
