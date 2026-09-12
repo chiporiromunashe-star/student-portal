@@ -1,0 +1,87 @@
+{% extends 'classroom/base.html' %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="card shadow-sm border-0 rounded-lg">
+        <div class="card-header bg-primary text-white py-3">
+            <h4 class="mb-0 fw-bold">Account Settings</h4>
+        </div>
+        <div class="card-body p-4">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <!-- Profile Picture Section -->
+                <div class="row mb-4 align-items-center">
+                    <div class="col-auto">
+                        {% if user.profile_picture %}
+                            <img src="{{ user.profile_picture.url }}" class="rounded-circle img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
+                        {% else %}
+                            <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 100px; height: 100px; font-size: 2rem;">
+                                {{ user.username|first|upper }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col">
+                        <label for="profile_picture" class="form-label fw-bold">Profile Picture</label>
+                        <input type="file" name="profile_picture" id="profile_picture" class="form-control">
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <!-- Personal Information -->
+                <h5 class="fw-bold mb-3 text-secondary">Personal Information</h5>
+                <div class="row g-3">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">First Name</label>
+                        <input type="text" name="first_name" class="form-control" value="{{ user.first_name }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Last Name</label>
+                        <input type="text" name="last_name" class="form-control" value="{{ user.last_name }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Username</label>
+                        <input type="text" name="username" class="form-control" value="{{ user.username }}" readonly>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Email Address</label>
+                        <input type="email" name="email" class="form-control" value="{{ user.email }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Phone</label>
+                        <input type="text" name="phone" class="form-control" value="{{ user.phone|default:'' }}">
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <button type="submit" name="update_profile" class="btn btn-primary px-4 py-2 rounded-pill">Save Profile Changes</button>
+                </div>
+            </form>
+
+            <hr class="my-5">
+
+            <!-- Security / Password Section -->
+            <h5 class="fw-bold mb-3 text-secondary">Security</h5>
+            <div class="d-flex align-items-center justify-content-between p-3 border rounded bg-light">
+                <div>
+                    <h6 class="mb-1 fw-bold">Password</h6>
+                    <small class="text-muted">Change your current account password</small>
+                </div>
+                <a href="{% url 'classroom:change_password' %}" class="btn btn-outline-primary rounded-pill px-4">Change Password</a>
+            </div>
+
+            <hr class="my-4">
+
+            <!-- Logout Section -->
+            <div class="d-flex align-items-center justify-content-between p-3 border border-danger rounded bg-light">
+                <div>
+                    <h6 class="mb-1 fw-bold text-danger">Session</h6>
+                    <small class="text-muted">Log out of your active portal session</small>
+                </div>
+                <a href="{% url 'classroom:logout' %}" class="btn btn-danger rounded-pill px-4">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
