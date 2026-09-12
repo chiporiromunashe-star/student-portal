@@ -21,7 +21,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='/classroom/login/', permanent=False)),
+    # Add name='home' to the end of the RedirectView path:
+    path('', RedirectView.as_view(url='/classroom/login/', permanent=False), name='home'),
+    
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('classroom/', include('classroom.urls')),
