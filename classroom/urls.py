@@ -36,5 +36,8 @@ urlpatterns =[
     path('change_password/',views.change_password,name="change_password"),
     path('dashboard/student/', views.student_dashboard, name='student_dashboard'),
     path('subjects/', views.subject_list, name='subject_list'),
+    path('dashboard/teacher/', views.teacher_dashboard, name='teacher_dashboard'),
+
+    
 
 ]
