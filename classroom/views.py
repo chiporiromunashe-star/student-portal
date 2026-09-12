@@ -476,34 +476,48 @@ def change_password(request):
 
 
 @login_required
-def student_dashboard(request):
-    return render(request, 'classroom/student_dashboard.html')
-@login_required
-def subject_list(request):
-    return render(request, 'classroom/subject_list.html')
-@login_required
-def teacher_dashboard(request):
-    return render(request, 'classroom/teacher_dashboard.html')
-@login_required
 def account_view(request):
-    if request.method == 'POST' and 'update_profile' in request.POST:
-        user = request.user
-        user.first_name = request.POST.get('first_name')
-        user.last_name = request.POST.get('last_name')
-        user.email = request.POST.get('email')
-        
-        # Handle phone or custom fields if saved on the user model
-        if hasattr(user, 'phone'):
-            user.phone = request.POST.get('phone')
-            
-        # Handle profile picture upload if your model supports it
-        if 'profile_picture' in request.FILES:
-            user.profile_picture = request.FILES['profile_picture']
-            
+    user = request.user
+    
+    # Determine if user is a student or teacher to access the correct profile model
+    is_student = getattr(user, 'is_student', False) or hasattr(user, 'Student') or hasattr(user, 'student')
+    is_teacher = getattr(user, 'is_teacher', False) or hasattr(user, 'Teacher') or hasattr(user, 'teacher')
+    
+    profile = None
+    if is_student and hasattr(user, 'Student'):
+        profile = user.Student
+    elif is_teacher and hasattr(user, 'Teacher'):
+        profile = user.Teacher
+
+    if request.method == 'POST':
+        # 1. Update the base User model fields
+        user.first_name = request.POST.get('first_name', user.first_name)
+        user.last_name = request.POST.get('last_name', user.last_name)
+        user.email = request.POST.get('email', user.email)
         user.save()
+        
+        # 2. Update the Profile model fields (Phone & Profile Pic)
+        if profile:
+            # Sync the phone number if it exists on your profile model
+            if hasattr(profile, 'phone'):
+                profile.phone = request.POST.get('phone', profile.phone)
+            elif hasattr(profile, 'phone_no'):
+                profile.phone_no = request.POST.get('phone', profile.phone_no)
+                
+            # Handle profile picture upload based on the specific field names used in your other views
+            if is_student and 'profile_picture' in request.FILES:
+                profile.student_profile_pic = request.FILES['profile_picture']
+            elif is_teacher and 'profile_picture' in request.FILES:
+                profile.teacher_profile_pic = request.FILES['profile_picture']
+                
+            profile.save()
+
         messages.success(request, 'Your account has been updated successfully!')
         return redirect('classroom:account')
         
-    return render(request, 'classroom/account.html')
+    # Pass the 'profile' context variable to the template so you can render phone and pictures
+    return render(request, 'classroom/account.html', {'profile': profile})
+
+
 
 
