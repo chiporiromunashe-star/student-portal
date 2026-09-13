@@ -219,6 +219,9 @@ def add_marks(request, pk):
         form = MarksForm()
     return render(request, 'classroom/add_marks.html', {'form': form, 'student': student, 'marks_given': marks_given})
 
+# Alias view function to handle 'enter_marks' reverse lookup referenced in template
+enter_marks = add_marks
+
 ## For updating marks.
 @login_required
 def update_marks(request, pk):
@@ -560,6 +563,7 @@ def class_students_list(request):
         "teacher_subjects": teacher_subjects,
     }
     return render(request, "classroom/class_students_list.html", context)
+
 
 
 
