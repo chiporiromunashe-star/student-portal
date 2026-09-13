@@ -247,7 +247,7 @@ def enter_results(request, pk):
         messages.success(request, 'Results entered successfully!')
         return redirect('classroom:class_students_list')
 
-    existing_results = {m.subject_id: m for m in StudentMarks.objects.filter(teacher=teacher, student=student)}
+    existing_results = {m.subject_name: m for m in StudentMarks.objects.filter(teacher=teacher, student=student)}
 
     return render(request, 'classroom/add_marks.html', {
         'student': student,
