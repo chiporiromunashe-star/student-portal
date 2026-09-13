@@ -40,6 +40,8 @@ urlpatterns = [
     path('dashboard/teacher/', views.teacher_dashboard, name='teacher_dashboard'),
     path('teacher/subjects/', views.update_teacher_subjects, name='update_teacher_subjects'),
     path('student/subjects/', views.update_student_subjects, name='student_subjects'),
+    path('student/<int:pk>/enter-results/', views.enter_results, name='enter_results'),
+    path('student/<int:pk>/enter-marks/', views.enter_results, name='enter_marks'), # Alias for backward compatibility
 ]
 
 
