@@ -1,206 +1,7 @@
 {% extends 'classroom/base.html' %}
-{% load static %}
 {% block content %}
-
-<div class="dashboard-wrapper">
-    <!-- DASHBOARD HEADER -->
-    <div class="dashboard-header-card">
-        <h1>Teacher Portal Dashboard</h1>
-        <p>Manage assignments, class notices, student records, and grade submissions from one central hub.</p>
-    </div>
-
-<div class="card my-3 p-3">
-    <h4>Subject Management</h4>
-    <p>Update the list of subjects you are currently teaching.</p>
-    <a href="{% url 'classroom:teacher_subjects' %}" class="btn btn-secondary">Manage Taught Subjects</a>
-</div>
-
-    
-
-    <!-- MAIN CARDS GRID -->
-    <div class="dashboard-grid">
-
-        <!-- CARD 1: ASSIGNMENTS HUB -->
-        <div class="dashboard-card assignment-card">
-            <div class="card-header-styled">
-                <div>
-                    <span class="stat-label">ASSIGNMENT MANAGEMENT</span>
-                    <h2 style="border: none; padding: 0; margin: 4px 0 0 0;">Class Assignments</h2>
-                </div>
-                <span class="badge-accent">Teacher Tools</span>
-            </div>
-            
-            <p style="color: #64748b; font-size: 13px; margin-bottom: 16px;">
-                Upload new coursework, manage published assignments, and review incoming student submissions.
-            </p>
-
-            <div class="action-buttons-group">
-                <a href="{% url 'classroom:upload_assignment' %}" class="action-btn primary-btn">
-                    <span>&#43;</span> Upload Assignment
-                </a>
-                <a href="{% url 'classroom:assignment_list' %}" class="action-btn secondary-btn">
-                    <span>&#128196;</span> Assignment List
-                </a>
-                <a href="{% url 'classroom:class_assignment' %}" class="action-btn outline-btn">
-                    <span>&#128065;</span> View Submissions
-                </a>
-            </div>
-        </div>
-
-        <!-- CARD 2: WRITE NOTICE -->
-        <a href="{% url 'classroom:write_notice' %}" class="stat-card-link">
-            <div class="stat-card hover-effect">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                    <span class="stat-label">ANNOUNCEMENTS</span>
-                    <span class="notice-icon">&#128227;</span>
-                </div>
-                <div class="stat-value">Write Class Notice</div>
-                <span class="stat-subtext positive">Publish new updates to students &rarr;</span>
-            </div>
-        </a>
-
-        <!-- CARD 3: CLASS STUDENT LIST -->
-        <a href="{% url 'classroom:class_student_list' %}" class="stat-card-link">
-            <div class="stat-card hover-effect">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                    <span class="stat-label">STUDENT RECORDS</span>
-                    <span class="notice-icon">&#128101;</span>
-                </div>
-                <div class="stat-value">Class Student List</div>
-                <span class="stat-subtext muted">View & manage enrolled students &rarr;</span>
-            </div>
-        </a>
-
-    </div>
-</div>
-
 <style>
-    .dashboard-wrapper {
-        background-color: #f8fafc;
-        min-height: calc(100vh - 100px);
-        padding: 20px 0;
-        box-sizing: border-box;
-        max-width: 1100px;
-        margin: 0 auto;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    }
-
-    .dashboard-header-card {
-        background: #0f172a;
-        color: #ffffff;
-        padding: 28px 32px;
-        border-radius: 10px;
-        margin-bottom: 24px;
-        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
-    }
-    .dashboard-header-card h1 {
-        margin: 0 0 6px 0;
-        font-size: 26px;
-        font-weight: 700;
-        letter-spacing: -0.5px;
-    }
-    .dashboard-header-card p {
-        margin: 0;
-        color: #94a3b8;
-        font-size: 14px;
-    }
-
-    .dashboard-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 20px;
-    }
-
-    /* CARD STYLES */
-    .dashboard-card, .stat-card {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 10px;
-        padding: 24px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
-        box-sizing: border-box;
-    }
-
-    .stat-card-link {
-        text-decoration: none;
-        color: inherit;
-        display: block;
-    }
-
-    .hover-effect {
-        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-    .hover-effect:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
-        border-color: #cbd5e1;
-    }
-
-    .stat-label {
-        font-size: 11px;
-        font-weight: 700;
-        color: #64748b;
-        letter-spacing: 0.8px;
-        text-transform: uppercase;
-    }
-
-    .stat-value {
-        font-size: 22px;
-        font-weight: 700;
-        color: #0f172a;
-        margin: 12px 0 8px 0;
-    }
-
-    .stat-subtext {
-        font-size: 13px;
-        font-weight: 600;
-    }
-    .stat-subtext.positive { color: #0284c7; }
-    .stat-subtext.muted { color: #475569; }
-
-    .notice-icon {
-        font-size: 20px;
-    }
-
-    /* ASSIGNMENT HUB STYLES */
-    .assignment-card {
-        grid-column: 1 / -1;
-    }
-    .card-header-styled {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 2px solid #FFD700;
-        padding-bottom: 12px;
-        margin-bottom: 12px;
-    }
-    .badge-accent {
-        background-color: #f0fdf4;
-        color: #15803d;
-        border: 1px solid #bbf7d0;
-        font-size: 11px;
-        font-weight: 700;
-        padding: 4px 10px;
-        border-radius: 20px;
-        text-transform: uppercase;
-    }
-
-    .action-buttons-group {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 12px;
-        margin-top: 16px;
-    }
-
-    .action-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
+    .custom-btn {
         padding: 12px 16px;
         border-radius: 6px;
         font-weight: 600;
@@ -208,16 +9,16 @@
         text-decoration: none;
         transition: all 0.2s ease;
         text-align: center;
+        display: inline-block;
     }
-
     .primary-btn {
         background-color: #0f172a;
         color: #ffffff;
     }
     .primary-btn:hover {
         background-color: #0284c7;
+        color: #ffffff;
     }
-
     .secondary-btn {
         background-color: #f1f5f9;
         color: #0f172a;
@@ -225,8 +26,8 @@
     }
     .secondary-btn:hover {
         background-color: #e2e8f0;
+        color: #0f172a;
     }
-
     .outline-btn {
         background-color: #ffffff;
         color: #0284c7;
@@ -234,7 +35,94 @@
     }
     .outline-btn:hover {
         background-color: #f0f9ff;
+        color: #0284c7;
     }
+</style>
+
+<div class="container py-5">
+  <!-- Hero Header -->
+  <div class="card bg-dark text-white border-0 rounded-4 shadow-sm p-4 mb-4 bg-gradient">
+    <div class="card-body">
+      <h2 class="fw-bold mb-2">Teacher Portal Dashboard</h2>
+      <p class="text-white-50 mb-0">Manage assignments, class notices, student records, and grade submissions from one central hub.</p>
+    </div>
+  </div>
+
+  <!-- Subject Management Section -->
+  <div class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-body p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+      <div>
+        <h5 class="fw-bold text-dark mb-1">Subject Management</h5>
+        <p class="text-muted small mb-0">Update the list of subjects you are currently teaching.</p>
+      </div>
+      <a href="{% url 'classroom:update_teacher_subjects' %}" class="custom-btn outline-btn">
+        Manage Taught Subjects
+      </a>
+    </div>
+  </div>
+
+  <!-- Assignment Management Grid -->
+  <div class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-body p-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold text-dark mb-0">Class Assignments</h5>
+        <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">Teacher Tools</span>
+      </div>
+      <p class="text-muted small mb-4">Upload new coursework, manage published assignments, and review incoming student submissions.</p>
+      
+      <div class="row g-3">
+        <div class="col-md-4">
+          <a href="{% url 'classroom:upload_assignment' %}" class="custom-btn primary-btn w-100 d-block">
+            + Upload Assignment
+          </a>
+        </div>
+        <div class="col-md-4">
+          <a href="{% url 'classroom:assignment_list' %}" class="custom-btn secondary-btn w-100 d-block">
+            Assignment List
+          </a>
+        </div>
+        <div class="col-md-4">
+          <a href="{% url 'classroom:submit_list' %}" class="custom-btn outline-btn w-100 d-block">
+            View Submissions
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Grid: Notices & Student Records -->
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card border-0 shadow-sm rounded-4 h-100">
+        <div class="card-body p-4 d-flex flex-column justify-content-between">
+          <div>
+            <h5 class="fw-bold text-dark mb-2">Announcements</h5>
+            <p class="text-muted small">Publish important updates, notices, and announcements directly to your class students.</p>
+          </div>
+          <a href="{% url 'classroom:add_notice' %}" class="custom-btn primary-btn mt-3 align-self-start">
+            Write Class Notice
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card border-0 shadow-sm rounded-4 h-100">
+        <div class="card-body p-4 d-flex flex-column justify-content-between">
+          <div>
+            <h5 class="fw-bold text-dark mb-2">Student Records</h5>
+            <p class="text-muted small">View students enrolled in your subjects and manage grade inputs.</p>
+          </div>
+          <a href="{% url 'classroom:class_students_list' %}" class="custom-btn secondary-btn mt-3 align-self-start">
+            Class Student List
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
 </style>
 
 {% endblock %}
