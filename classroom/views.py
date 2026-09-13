@@ -7,16 +7,16 @@ from django.views.generic import (View, TemplateView,
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from classroom.forms import (UserForm, TeacherProfileForm, StudentProfileForm, 
-                             TeacherSubjectForm, StudentSubjectForm, MarksForm, 
-                             MessageForm, NoticeForm, AssignmentForm, SubmitForm, 
+from classroom.forms import (UserForm, TeacherProfileForm, StudentProfileForm,
+                             TeacherSubjectForm, StudentSubjectForm, MarksForm,
+                             MessageForm, NoticeForm, AssignmentForm, SubmitForm,
                              TeacherProfileUpdateForm, StudentProfileUpdateForm)
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.http import HttpResponseRedirect, HttpResponse
 from classroom import models
-from classroom.models import (StudentsInClass, StudentMarks, ClassAssignment, 
+from classroom.models import (StudentsInClass, StudentMarks, ClassAssignment,
                                 SubmitAssignment, Student, Teacher)
 from django.contrib.auth.forms import PasswordChangeForm
 from django.db.models import Q
@@ -92,7 +92,7 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
-               
+                
                 is_student_user = getattr(user, 'is_student', False) or hasattr(user, 'student') or hasattr(user, 'Student')
                 is_teacher_user = getattr(user, 'is_teacher', False) or hasattr(user, 'teacher') or hasattr(user, 'Teacher')
 
@@ -365,10 +365,10 @@ def upload_assignment(request):
             upload = form.save(commit=False)
             upload.teacher = teacher
             upload.save()
-           
+            
             enrolled_students = Student.objects.filter(subjects_enrolled=upload.subject)
             upload.student.set(enrolled_students)
-           
+            
             assignment_uploaded = True
     else:
         form = AssignmentForm(teacher=teacher)
@@ -378,7 +378,7 @@ def upload_assignment(request):
 @login_required
 def class_assignment(request):
     student = getattr(request.user, 'Student', None) or getattr(request.user, 'student', None)
-   
+    
     if student:
         enrolled_subjects = student.subjects_enrolled.all()
         assignment_list = ClassAssignment.objects.filter(subject__in=enrolled_subjects)
@@ -517,7 +517,8 @@ def account_view(request):
                 profile.student_profile_pic = request.FILES['profile_picture']
             elif is_teacher and 'profile_picture' in request.FILES:
                 profile.teacher_profile_pic = request.FILES['profile_picture']
-         profile.save()
+               
+            profile.save()
 
         messages.success(request, 'Your account has been updated successfully!')
         return redirect('classroom:account')
@@ -534,7 +535,7 @@ def submit_list(request):
 def class_students_list(request):
     teacher = request.user.Teacher
     query = request.GET.get("q", None)
-    
+   
     teacher_subjects = []
     for field_name in ['subjects', 'subject', 'subjects_taught', 'taught_subjects']:
         if hasattr(teacher, field_name):
@@ -548,18 +549,17 @@ def class_students_list(request):
         subject_ids = ClassAssignment.objects.filter(teacher=teacher).values_list('subject_id', flat=True)
         from classroom.models import Subject
         teacher_subjects = Subject.objects.filter(id__in=subject_ids)
-    
+   
     students = Student.objects.filter(subjects_enrolled__in=teacher_subjects).distinct()
-    
+   
     if query is not None:
         students = students.filter(Q(name__icontains=query) | Q(user__username__icontains=query))
-        
+       
     context = {
         "class_students_list": students,
         "teacher_subjects": teacher_subjects,
     }
     return render(request, "classroom/class_students_list.html", context)
-
 
 
 
