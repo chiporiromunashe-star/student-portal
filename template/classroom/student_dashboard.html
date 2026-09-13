@@ -64,26 +64,31 @@
         </a>
 
 
-        <!-- ENROLLED SUBJECTS -->
-        <a href="{% url 'classroom:subject_list' %}"
+        <!-- FINAL RESULTS & TRANSCRIPT -->
+        {% if user.Student %}
+        <a href="{% url 'classroom:student_transcript' pk=user.Student.pk %}"
            class="stat-card-link">
+        {% else %}
+        <a href="#"
+           class="stat-card-link"
+           onclick="alert('No student profile associated with this account.'); return false;">
+        {% endif %}
 
             <div class="stat-card subjects-card">
-                <div class="card-icon">📚</div>
+                <div class="card-icon">📜</div>
 
-                <span class="stat-label">SUBJECTS</span>
+                <span class="stat-label">TRANSCRIPT</span>
 
                 <div class="stat-value">
-                    Enrolled Subjects
+                    Final Results
                 </div>
 
                 <p class="card-description">
-                    View your available subjects and manage your
-                    subject selection.
+                    View your complete academic transcript and official grade breakdown.
                 </p>
 
                 <span class="card-link blue">
-                    View course list & selection →
+                    View full transcript →
                 </span>
             </div>
 
@@ -795,4 +800,6 @@
 </style>
 
 {% endblock %}
+
+
 
