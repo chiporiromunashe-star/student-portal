@@ -1,0 +1,125 @@
+{% extends 'classroom/base.html' %}
+{% block content %}
+
+<div class="transcript-wrapper">
+    <div class="transcript-header">
+        <div>
+            <h1>Academic Transcript</h1>
+            <p>Official Record of Performance</p>
+        </div>
+        <button onclick="window.print()" class="print-btn">🖨️ Print Transcript</button>
+    </div>
+
+    <div class="student-info-card">
+        <p><strong>Student Name:</strong> {{ student }}</p>
+        {% if average_mark %}
+            <p><strong>Overall Average:</strong> {{ average_mark }}%</p>
+        {% endif %}
+    </div>
+
+    <table class="transcript-table">
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Percentage Mark</th>
+                <th>Grade / Symbol</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mark in marks %}
+                <tr>
+                    <td>{{ mark.subject_name }}</td>
+                    <td>{{ mark.marks_obtained }}%</td>
+                    <td><span class="badge">{{ mark.symbol|default:"-" }}</span></td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3" class="empty-msg">No marks or final results have been recorded yet.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .transcript-wrapper {
+        max-width: 900px;
+        margin: 30px auto;
+        background: #ffffff;
+        padding: 32px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        font-family: system-ui, -apple-system, sans-serif;
+    }
+    .transcript-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 16px;
+        margin-bottom: 24px;
+    }
+    .transcript-header h1 {
+        margin: 0;
+        color: #0f172a;
+        font-size: 24px;
+    }
+    .transcript-header p {
+        margin: 4px 0 0;
+        color: #64748b;
+        font-size: 14px;
+    }
+    .print-btn {
+        background: #0f172a;
+        color: white;
+        border: none;
+        padding: 9px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+    .student-info-card {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 16px 20px;
+        margin-bottom: 24px;
+        display: flex;
+        gap: 30px;
+    }
+    .transcript-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .transcript-table th, .transcript-table td {
+        padding: 14px 16px;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    .transcript-table th {
+        background: #f1f5f9;
+        color: #334155;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .badge {
+        background: #eff6ff;
+        color: #1d4ed8;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 6px;
+    }
+    .empty-msg {
+        text-align: center;
+        color: #64748b;
+        padding: 24px;
+    }
+    @media print {
+        .print-btn { display: none; }
+        .transcript-wrapper { box-shadow: none; padding: 0; }
+    }
+</style>
+
+{% endblock %}
+
