@@ -1,1391 +1,206 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>
-        Student Dashboard | Tried & Tested Academy
-    </title>
-
-    <style>
-
-        /* =====================================================
-           RESET
-        ====================================================== */
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f7fb;
-            color: #172033;
-        }
-
-        a {
-            text-decoration: none;
-        }
-
-        button {
-            font-family: inherit;
-            cursor: pointer;
-        }
-
-
-        /* =====================================================
-           TOP BAR
-        ====================================================== */
-
-        .topbar {
-            height: 72px;
-            background: #082f63;
-            color: white;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            padding: 0 28px;
-
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-
-            box-shadow: 0 2px 12px rgba(0,0,0,0.12);
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-
-            font-size: 21px;
-            font-weight: 700;
-        }
-
-        .brand-logo {
-            width: 42px;
-            height: 42px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            background: white;
-            color: #082f63;
-
-            border-radius: 9px;
-
-            font-size: 12px;
-            font-weight: 800;
-        }
-
-        .brand-text small {
-            display: block;
-
-            margin-top: 1px;
-
-            color: #b9cce4;
-
-            font-size: 11px;
-            font-weight: normal;
-        }
-
-        .top-right {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-
-        .portal-label {
-            color: #dce9f8;
-            font-size: 13px;
-        }
-
-        .profile-circle {
-            width: 42px;
-            height: 42px;
-
-            border-radius: 50%;
-
-            background: #1683f8;
-            color: white;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-weight: bold;
-            overflow: hidden;
-        }
-
-        .profile-circle img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-
-        /* =====================================================
-           LAYOUT
-        ====================================================== */
-
-        .dashboard-layout {
-            display: flex;
-            min-height: calc(100vh - 72px);
-        }
-
-
-        /* =====================================================
-           SIDEBAR
-        ====================================================== */
-
-        .sidebar {
-            width: 245px;
-
-            background: #0b2855;
-
-            padding: 26px 15px;
-
-            min-height: calc(100vh - 72px);
-
-            position: sticky;
-            top: 72px;
-        }
-
-        .sidebar-title {
-            color: #8fa8c9;
-
-            font-size: 11px;
-            font-weight: bold;
-
-            letter-spacing: 1.3px;
-
-            margin: 4px 12px 16px;
-        }
-
-        .sidebar a {
-            display: flex;
-            align-items: center;
-
-            gap: 12px;
-
-            padding: 13px 15px;
-
-            margin-bottom: 5px;
-
-            color: #dbe7f7;
-
-            border-radius: 8px;
-
-            font-size: 14px;
-
-            transition: 0.2s ease;
-        }
-
-        .sidebar a:hover,
-        .sidebar a.active {
-            background: #1683f8;
-            color: white;
-        }
-
-        .nav-icon {
-            width: 23px;
-
-            text-align: center;
-
-            font-size: 17px;
-        }
-
-        .logout-section {
-            margin-top: 25px;
-
-            padding-top: 18px;
-
-            border-top: 1px solid rgba(255,255,255,0.12);
-        }
-
-
-        /* =====================================================
-           MAIN CONTENT
-        ====================================================== */
-
-        .main-content {
-            flex: 1;
-
-            padding: 30px;
-
-            max-width: 1500px;
-
-            margin: auto;
-        }
-
-
-        /* =====================================================
-           WELCOME
-        ====================================================== */
-
-        .welcome-card {
-            background: linear-gradient(
-                135deg,
-                #092f63,
-                #12539b
-            );
-
-            color: white;
-
-            padding: 32px 35px;
-
-            border-radius: 16px;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            box-shadow:
-                0 8px 25px rgba(9,47,99,0.18);
-
-            margin-bottom: 25px;
-        }
-
-        .welcome-label {
-            color: #bcd8f5;
-
-            font-size: 11px;
-
-            font-weight: bold;
-
-            letter-spacing: 1.5px;
-        }
-
-        .welcome-card h1 {
-            font-size: 28px;
-
-            margin: 7px 0;
-        }
-
-        .welcome-card p {
-            color: #d6e5f8;
-
-            font-size: 14px;
-        }
-
-        .date-box {
-            text-align: right;
-        }
-
-        .date-box span {
-            display: block;
-
-            color: #bcd8f5;
-
-            font-size: 11px;
-
-            margin-bottom: 3px;
-        }
-
-        .date-box strong {
-            font-size: 15px;
-        }
-
-
-        /* =====================================================
-           INFORMATION CARDS
-        ====================================================== */
-
-        .info-grid {
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 20px;
-
-            margin-bottom: 25px;
-        }
-
-        .info-card {
-            background: white;
-
-            border: 1px solid #e1e8f0;
-
-            border-radius: 12px;
-
-            padding: 22px;
-
-            box-shadow:
-                0 3px 12px rgba(20,50,90,0.05);
-
-            transition: 0.2s;
-        }
-
-        .info-card:hover {
-            transform: translateY(-2px);
-
-            box-shadow:
-                0 8px 20px rgba(20,50,90,0.08);
-        }
-
-        .card-icon {
-            width: 48px;
-            height: 48px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 10px;
-
-            background: #eef6ff;
-
-            font-size: 22px;
-
-            margin-bottom: 15px;
-        }
-
-        .info-card h3 {
-            color: #10213b;
-
-            font-size: 17px;
-
-            margin-bottom: 5px;
-        }
-
-        .info-card p {
-            color: #718096;
-
-            font-size: 13px;
-
-            margin-bottom: 14px;
-        }
-
-        .card-link {
-            color: #1683f8;
-
-            font-size: 13px;
-
-            font-weight: 600;
-        }
-
-
-        /* =====================================================
-           GENERAL PANEL
-        ====================================================== */
-
-        .panel {
-            background: white;
-
-            border: 1px solid #e1e8f0;
-
-            border-radius: 12px;
-
-            padding: 24px;
-
-            margin-bottom: 25px;
-
-            box-shadow:
-                0 3px 12px rgba(20,50,90,0.04);
-        }
-
-        .section-header {
-            display: flex;
-
-            align-items: center;
-            justify-content: space-between;
-
-            gap: 15px;
-
-            margin-bottom: 20px;
-        }
-
-        .section-header h2 {
-            color: #10213b;
-
-            font-size: 21px;
-        }
-
-        .section-header p {
-            color: #718096;
-
-            font-size: 13px;
-
-            margin-top: 3px;
-        }
-
-
-        /* =====================================================
-           SUBJECTS
-        ====================================================== */
-
-        .subject-list {
-            display: flex;
-
-            flex-wrap: wrap;
-
-            gap: 10px;
-        }
-
-        .subject {
-            background: #eef6ff;
-
-            color: #0b57a0;
-
-            border: 1px solid #cfe3fb;
-
-            padding: 10px 15px;
-
-            border-radius: 20px;
-
-            font-size: 13px;
-
-            font-weight: 600;
-        }
-
-        .manage-button {
-            background: #1683f8;
-
-            color: white;
-
-            border: none;
-
-            border-radius: 7px;
-
-            padding: 10px 15px;
-
-            font-size: 13px;
-
-            font-weight: 600;
-        }
-
-        .manage-button:hover {
-            background: #0b6ed5;
-        }
-
-
-        /* =====================================================
-           EMPTY STATE
-        ====================================================== */
-
-        .empty-state {
-            padding: 30px 15px;
-
-            text-align: center;
-
-            color: #7b8798;
-
-            border: 1px dashed #d7e0ea;
-
-            border-radius: 9px;
-
-            background: #fafcff;
-        }
-
-        .empty-state .empty-icon {
-            font-size: 30px;
-
-            margin-bottom: 8px;
-        }
-
-        .empty-state h3 {
-            color: #39485d;
-
-            font-size: 15px;
-
-            margin-bottom: 4px;
-        }
-
-        .empty-state p {
-            font-size: 12px;
-        }
-
-
-        /* =====================================================
-           QUICK ACTIONS
-        ====================================================== */
-
-        .quick-actions {
-            display: grid;
-
-            grid-template-columns:
-                repeat(4, 1fr);
-
-            gap: 15px;
-
-            margin-bottom: 25px;
-        }
-
-        .quick-action {
-            background: white;
-
-            border: 1px solid #e1e8f0;
-
-            border-radius: 10px;
-
-            padding: 18px 10px;
-
-            text-align: center;
-
-            color: #0b57a0;
-
-            font-size: 13px;
-
-            font-weight: 600;
-
-            transition: 0.2s;
-        }
-
-        .quick-action:hover {
-            transform: translateY(-2px);
-
-            border-color: #bcd8f5;
-
-            box-shadow:
-                0 6px 15px rgba(0,0,0,0.07);
-        }
-
-        .quick-icon {
-            display: block;
-
-            font-size: 23px;
-
-            margin-bottom: 7px;
-        }
-
-
-        /* =====================================================
-           TWO COLUMNS
-        ====================================================== */
-
-        .two-columns {
-            display: grid;
-
-            grid-template-columns:
-                1fr 1fr;
-
-            gap: 25px;
-        }
-
-
-        /* =====================================================
-           PROFILE
-        ====================================================== */
-
-        .profile-row {
-            display: flex;
-
-            align-items: center;
-
-            gap: 15px;
-
-            padding: 10px 0;
-        }
-
-        .profile-image {
-            width: 58px;
-            height: 58px;
-
-            border-radius: 50%;
-
-            overflow: hidden;
-
-            background: #eef6ff;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            color: #1683f8;
-
-            font-size: 22px;
-
-            font-weight: bold;
-        }
-
-        .profile-image img {
-            width: 100%;
-            height: 100%;
-
-            object-fit: cover;
-        }
-
-        .profile-details strong {
-            display: block;
-
-            color: #172033;
-
-            font-size: 16px;
-        }
-
-        .profile-details span {
-            display: block;
-
-            color: #7b8798;
-
-            font-size: 12px;
-
-            margin-top: 3px;
-        }
-
-
-        /* =====================================================
-           FOOTER
-        ====================================================== */
-
-        .footer {
-            text-align: center;
-
-            color: #8a98aa;
-
-            font-size: 11px;
-
-            padding: 15px 0 5px;
-        }
-
-
-        /* =====================================================
-           MOBILE
-        ====================================================== */
-
-        @media (max-width: 1000px) {
-
-            .sidebar {
-                width: 210px;
-            }
-
-            .quick-actions {
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-
-            .two-columns {
-                grid-template-columns: 1fr;
-            }
-
-        }
-
-
-        @media (max-width: 800px) {
-
-            .sidebar {
-                display: none;
-            }
-
-            .main-content {
-                padding: 20px;
-            }
-
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .welcome-card {
-                flex-direction: column;
-
-                align-items: flex-start;
-
-                gap: 20px;
-            }
-
-            .date-box {
-                text-align: left;
-            }
-
-        }
-
-
-        @media (max-width: 550px) {
-
-            .topbar {
-                height: 64px;
-
-                padding: 0 15px;
-            }
-
-            .brand {
-                font-size: 16px;
-            }
-
-            .brand-logo {
-                width: 35px;
-                height: 35px;
-            }
-
-            .portal-label {
-                display: none;
-            }
-
-            .main-content {
-                padding: 15px;
-            }
-
-            .welcome-card {
-                padding: 25px 22px;
-            }
-
-            .welcome-card h1 {
-                font-size: 23px;
-            }
-
-            .quick-actions {
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-
-            .section-header {
-                align-items: flex-start;
-            }
-
-            .section-header h2 {
-                font-size: 18px;
-            }
-
-        }
-
-    </style>
-</head>
-
-
-<body>
-
-
-<!-- =====================================================
-     HEADER
-====================================================== -->
-
-<header class="topbar">
-
-    <div class="brand">
-
-        <div class="brand-logo">
-            T&T
-        </div>
-
-        <div class="brand-text">
-
-            Tried & Tested Academy
-
-            <small>
-                Student Portal
-            </small>
-
-        </div>
-
+{% extends 'classroom/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="dashboard-wrapper">
+    <div class="dashboard-header-card">
+        <h1>Student Dashboard View</h1>
+        <p>Welcome back, {{ request.user.first_name|default:request.user.username }}!</p>
     </div>
 
-
-    <div class="top-right">
-
-        <span class="portal-label">
-            Student Portal
-        </span>
-
-
-        {% if request.user.Student.student_profile_pic %}
-
-            <div class="profile-circle">
-
-                <img
-                    src="{{ request.user.Student.student_profile_pic.url }}"
-                    alt="Profile"
-                >
-
-            </div>
-
-        {% else %}
-
-            <div class="profile-circle">
-
-                {{ request.user.first_name|first|default:request.user.username|first|upper }}
-
-            </div>
-
-        {% endif %}
-
+    <div class="overview-box">
+        <p><strong>Overview:</strong> Quick summary of your current academic standing, enrolled subjects, and upcoming task deadlines.</p>
     </div>
-
-</header>
-
-
-
-<!-- =====================================================
-     DASHBOARD LAYOUT
-====================================================== -->
-
-<div class="dashboard-layout">
-
-
-    <!-- =================================================
-         SIDEBAR
-    ================================================== -->
-
-    <aside class="sidebar">
-
-        <div class="sidebar-title">
-            MAIN MENU
-        </div>
-
-
-        <nav>
-
-            <a
-                href="{% url 'classroom:student_dashboard' %}"
-                class="active"
-            >
-                <span class="nav-icon">🏠</span>
-                Dashboard
-            </a>
-
-
-            <a href="{% url 'classroom:subject_list' %}">
-
-                <span class="nav-icon">📚</span>
-
-                My Subjects
-
-            </a>
-
-
-            <a href="{% url 'classroom:student_allmarks_list' request.user.Student.pk %}">
-
-                <span class="nav-icon">📊</span>
-
-                Marks & Grades
-
-            </a>
-
-
-            <a href="{% url 'classroom:class_assignment' %}">
-
-                <span class="nav-icon">📝</span>
-
-                Assignments
-
-            </a>
-
-
-            <a href="#">
-
-                <span class="nav-icon">📅</span>
-
-                Timetable
-
-            </a>
-
-
-            <a
-                href="{% url 'classroom:class_notice' request.user.Student.pk %}"
-            >
-
-                <span class="nav-icon">📢</span>
-
-                Announcements
-
-            </a>
-
-
-            <a href="#">
-
-                <span class="nav-icon">📄</span>
-
-                Study Materials
-
-            </a>
-
-
-            <a href="{% url 'classroom:account' %}">
-
-                <span class="nav-icon">👤</span>
-
-                My Profile
-
-            </a>
-
-        </nav>
-
-
-        <div class="logout-section">
-
-            <a href="{% url 'classroom:logout' %}">
-
-                <span class="nav-icon">🚪</span>
-
-                Logout
-
-            </a>
-
-        </div>
-
-    </aside>
-
-
-
-    <!-- =================================================
-         MAIN
-    ================================================== -->
-
-    <main class="main-content">
-
-
-        <!-- =================================================
-             WELCOME
-        ================================================== -->
-
-        <section class="welcome-card">
-
-            <div>
-
-                <span class="welcome-label">
-                    STUDENT DASHBOARD
-                </span>
-
-
-                <h1>
-
-                    {% if request.user.first_name %}
-
-                        Welcome back,
-                        {{ request.user.first_name }}!
-
-                    {% else %}
-
-                        Welcome back!
-
-                    {% endif %}
-
-                </h1>
-
-
-                <p>
-                    Manage your subjects, assignments,
-                    academic results and school information.
-                </p>
-
-            </div>
-
-
-            <div class="date-box">
-
-                <span>
-                    TODAY
-                </span>
-
-                <strong>
-                    {% now "j F Y" %}
-                </strong>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             INFORMATION CARDS
-             No fake statistics
-        ================================================== -->
-
-        <div class="info-grid">
-
-
-            <!-- MARKS -->
-
-            <div class="info-card">
-
-                <div class="card-icon">
-                    📊
-                </div>
-
-                <h3>
-                    Academic Marks
-                </h3>
-
-                <p>
-                    View the marks that have been uploaded
-                    for your subjects.
-                </p>
-
-                <a
-                    class="card-link"
-                    href="{% url 'classroom:StudentAllMarksList' request.user.Student.pk %}"
-                >
-                    View Marks →
-                </a>
-
-            </div>
-
-
-
-            <!-- SUBJECTS -->
-
-            <div class="info-card">
-
-                <div class="card-icon">
-                    📚
-                </div>
-
-                <h3>
-                    My Subjects
-                </h3>
-
-                <p>
-                    View and manage your currently
-                    enrolled subjects.
-                </p>
-
-                <a
-                    class="card-link"
-                    href="{% url 'classroom:subject_list' %}"
-                >
-                    View Subjects →
-                </a>
-
-            </div>
-
-
-
-            <!-- ASSIGNMENTS -->
-
-            <div class="info-card">
-
-                <div class="card-icon">
-                    📝
-                </div>
-
-                <h3>
-                    Class Assignments
-                </h3>
-
-                <p>
-                    View assignments uploaded for
-                    your enrolled subjects.
-                </p>
-
-                <a
-                    class="card-link"
-                    href="{% url 'classroom:class_assignment' %}"
-                >
-                    View Assignments →
-                </a>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             SUBJECTS
-        ================================================== -->
-
-        <section class="panel">
-
-            <div class="section-header">
-
-                <div>
-
-                    <h2>
-                        My Subjects
-                    </h2>
-
-                    <p>
-                        Your subjects currently stored
-                        in your student profile.
-                    </p>
-
-                </div>
-
-
-                <a
-                    href="{% url 'classroom:update_student_subjects' %}"
-                    class="manage-button"
-                >
-                    Manage Subjects
-                </a>
-
-            </div>
-
-
-            {% with subjects=request.user.Student.subjects_enrolled.all %}
-
-                {% if subjects %}
-
-                    <div class="subject-list">
-
-                        {% for subject in subjects %}
-
-                            <span class="subject">
-                                {{ subject }}
-                            </span>
-
-                        {% endfor %}
-
-                    </div>
-
-                {% else %}
-
-                    <div class="empty-state">
-
-                        <div class="empty-icon">
-                            📚
-                        </div>
-
-                        <h3>
-                            No subjects enrolled
-                        </h3>
-
-                        <p>
-                            Your enrolled subjects will appear here.
-                        </p>
-
-                    </div>
-
-                {% endif %}
-
-            {% endwith %}
-
-        </section>
-
-
-
-        <!-- =================================================
-             QUICK ACTIONS
-        ================================================== -->
-
-        <div class="quick-actions">
-
-
-            <a
-                class="quick-action"
-                href="{% url 'classroom:class_assignment' %}"
-            >
-
-                <span class="quick-icon">
-                    📝
-                </span>
-
-                View Assignments
-
-            </a>
-
-
-            <a
-                class="quick-action"
-                href="{% url 'classroom:student_allmarks_list' request.user.Student.pk %}"
-            >
-
-                <span class="quick-icon">
-                    📊
-                </span>
-
-                View Results
-
-            </a>
-
-
-            <a
-                class="quick-action"
-                href="{% url 'classroom:class_notice' request.user.Student.pk %}"
-            >
-
-                <span class="quick-icon">
-                    📢
-                </span>
-
-                Class Notices
-
-            </a>
-
-
-            <a
-                class="quick-action"
-                href="{% url 'classroom:account' %}"
-            >
-
-                <span class="quick-icon">
-                    👤
-                </span>
-
-                My Profile
-
-            </a>
-
-        </div>
-
-
-
-        <!-- =================================================
-             TWO COLUMNS
-        ================================================== -->
-
-        <div class="two-columns">
-
-
-            <!-- =================================================
-                 STUDENT PROFILE
-            ================================================== -->
-
-            <section class="panel">
-
-                <div class="section-header">
-
-                    <div>
-
-                        <h2>
-                            My Profile
-                        </h2>
-
-                        <p>
-                            Your account information.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="profile-row">
-
-
-                    {% if request.user.Student.student_profile_pic %}
-
-                        <div class="profile-image">
-
-                            <img
-                                src="{{ request.user.Student.student_profile_pic.url }}"
-                                alt="Student profile"
-                            >
-
-                        </div>
-
-                    {% else %}
-
-                        <div class="profile-image">
-
-                            {{ request.user.first_name|first|default:request.user.username|first|upper }}
-
-                        </div>
-
-                    {% endif %}
-
-
-                    <div class="profile-details">
-
-                        <strong>
-
-                            {% if request.user.get_full_name %}
-
-                                {{ request.user.get_full_name }}
-
-                            {% else %}
-
-                                {{ request.user.username }}
-
-                            {% endif %}
-
-                        </strong>
-
-
-                        <span>
-                            {{ request.user.email }}
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <br>
-
-
-                <a
-                    href="{% url 'classroom:account' %}"
-                    class="card-link"
-                >
-                    Manage Profile →
-                </a>
-
-            </section>
-
-
-
-            <!-- =================================================
-                 ANNOUNCEMENTS
-            ================================================== -->
-
-            <section class="panel">
-
-                <div class="section-header">
-
-                    <div>
-
-                        <h2>
-                            Announcements
-                        </h2>
-
-                        <p>
-                            View notices sent to your class.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="empty-state">
-
-                    <div class="empty-icon">
-                        📢
-                    </div>
-
-                    <h3>
-                        View Class Notices
-                    </h3>
-
-                    <p>
-                        Open your class notices to see
-                        announcements from your teacher.
-                    </p>
-
-                    <br>
-
-                    <a
-                        href="{% url 'classroom:class_notice' request.user.Student.pk %}"
-                        class="card-link"
-                    >
-                        Open Announcements →
-                    </a>
-
-                </div>
-
-            </section>
-
-        </div>
-
-
-
-        <!-- =================================================
-             FOOTER
-        ================================================== -->
-
-        <footer class="footer">
-
-            Tried & Tested Academy
-            &nbsp;•&nbsp;
-            Student Portal
-            &nbsp;•&nbsp;
-            {% now "Y" %}
-
-        </footer>
-
-
-    </main>
-
+   
+<div class="card my-3 p-3">
+    <h4>My Subjects</h4>
+    <p>View or modify your chosen subjects for the semester.</p>
+    <a href="{% url 'classroom:student_subjects' %}" class="btn btn-primary">Update Enrolled Subjects</a>
 </div>
 
-</body>
-</html>
+    <div class="stats-grid">
+        <!-- CARD 1: MARKS -->
+        {% if user.Student %}
+        <a href="{% url 'classroom:all_marks_list' pk=user.Student.pk %}" class="stat-card-link">
+        {% else %}
+        <a href="#" class="stat-card-link" onclick="alert('No student profile associated with this account.'); return false;">
+        {% endif %}
+            <div class="stat-card hover-effect">
+                <span class="stat-label">MARKS & GRADES</span>
+                <div class="stat-value">Academic Marks</div>
+                <span class="stat-subtext positive">View uploaded marks &rarr;</span>
+            </div>
+        </a>
+
+        <!-- CARD 2: SUBJECT LIST -->
+        <a href="{% url 'classroom:subject_list' %}" class="stat-card-link">
+            <div class="stat-card hover-effect">
+                <span class="stat-label">SUBJECT LIST</span>
+                <div class="stat-value">Enrolled Subjects</div>
+                <span class="stat-subtext muted">View course list & selection &rarr;</span>
+            </div>
+        </a>
+
+        <!-- CARD 3: CLASS ASSIGNMENTS / PENDING TASKS -->
+        <a href="{% url 'classroom:class_assignment' %}" class="stat-card-link">
+            <div class="stat-card hover-effect">
+                <span class="stat-label">PENDING TASKS</span>
+                <div class="stat-value highlight">Class Assignments</div>
+                <span class="stat-subtext alert">Check active assignments &rarr;</span>
+            </div>
+        </a>
+    </div>
+
+   <!-- ANNOUNCEMENTS & NOTICES CARD -->
+    {% if student %}
+    <a href="{% url 'classroom:class_notice' pk=student.pk %}" class="stat-card-link">
+    {% else %}
+    <a href="#" class="stat-card-link" onclick="alert('No student profile associated with this account.'); return false;">
+    {% endif %}
+        <div class="dashboard-card hover-effect">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; margin-bottom: 16px;">
+                <h2 style="border: none; padding: 0; margin: 0;">Recent Announcements & Notices</h2>
+                <span class="stat-subtext muted" style="color: #0284c7; font-weight: 600;">View class notices &rarr;</span>
+            </div>
+            <ul class="announcement-list">
+                <li>
+                    <strong>Mid-Term Examination Timetable Released:</strong>
+                    Check your examination portal for room allocations starting next Monday.
+                </li>
+                <li>
+                    <strong>Library Extended Hours:</strong>
+                    The main campus library will remain open until 22:00 during revision week.
+                </li>
+                <li>
+                    <strong>Portal Maintenance Notice:</strong>
+                    Scheduled server maintenance this Saturday from 01:00 to 03:00 CAT.
+                </li>
+            </ul>
+        </div>
+    </a>
+</div>
+
+<style>
+    .dashboard-wrapper {
+        background-color: #f8fafc;
+        min-height: calc(100vh - 60px);
+        padding: 32px 24px;
+        box-sizing: border-box;
+        max-width: 1100px;
+        margin: 0 auto;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    .dashboard-header-card {
+        background: #0f172a;
+        color: #ffffff;
+        padding: 28px 32px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+    }
+    .dashboard-header-card h1 {
+        margin: 0 0 6px 0;
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+    .dashboard-header-card p {
+        margin: 0;
+        color: #94a3b8;
+        font-size: 14px;
+    }
+    .overview-box {
+        background-color: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 8px;
+        padding: 14px 20px;
+        margin-bottom: 24px;
+    }
+    .overview-box p {
+        margin: 0;
+        color: #1e40af;
+        font-size: 13.5px;
+        line-height: 1.5;
+    }
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin-bottom: 24px;
+    }
+    .stat-card-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+    .stat-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .stat-card.hover-effect:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+    }
+    .stat-label {
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        color: #64748b;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+    .stat-value {
+        font-size: 22px;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 6px;
+    }
+    .stat-value.highlight { color: #c2410c; }
+    .stat-subtext { font-size: 12px; font-weight: 500; }
+    .stat-subtext.positive { color: #16a34a; }
+    .stat-subtext.muted { color: #0284c7; }
+    .stat-subtext.alert { color: #ea580c; }
+    .dashboard-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 24px 28px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    }
+    .dashboard-card h2 {
+        margin: 0 0 16px 0;
+        font-size: 18px;
+        color: #0f172a;
+        font-weight: 700;
+        border-bottom: 2px solid #f1f5f9;
+        padding-bottom: 10px;
+    }
+    .announcement-list { list-style: none; padding: 0; margin: 0; }
+    .announcement-list li {
+        position: relative;
+        padding-left: 20px;
+        margin-bottom: 14px;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #334155;
+    }
+    .announcement-list li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: #0284c7;
+        font-size: 18px;
+        font-weight: bold;
+    }
+    .announcement-list strong { color: #0f172a; }
+</style>
+
+{% endblock %}
+
 
