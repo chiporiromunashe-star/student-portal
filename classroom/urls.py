@@ -42,6 +42,7 @@ urlpatterns = [
     path('student/subjects/', views.update_student_subjects, name='student_subjects'),
     path('student/<int:pk>/enter-results/', views.enter_results, name='enter_results'),
     path('student/<int:pk>/enter-marks/', views.enter_results, name='enter_marks'), # Alias for backward compatibility
+    path('student/<int:pk>/transcript/', views.student_marks_list, name='student_marks_list'),
 ]
 
 
