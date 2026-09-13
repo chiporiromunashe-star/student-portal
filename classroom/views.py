@@ -535,18 +535,28 @@ def submit_list(request):
 def class_students_list(request):
     teacher = request.user.Teacher
     query = request.GET.get("q", None)
-   
+    
+    # Safely check all possible field names for teacher subjects
     teacher_subjects = []
-    if hasattr(teacher, 'subjects'):
-        teacher_subjects = teacher.subjects.all()
-    elif hasattr(teacher, 'subject'):
-        teacher_subjects = teacher.subject.all()
-       
+    for field_name in ['subjects', 'subject', 'subjects_taught', 'taught_subjects']:
+        if hasattr(teacher, field_name):
+            attr = getattr(teacher, field_name)
+            if hasattr(attr, 'all'):
+                teacher_subjects = attr.all()
+                if teacher_subjects.exists():
+                    break
+                    
+    # Fallback: if no direct teacher subjects found, check subjects from teacher's assignments
+    if not teacher_subjects:
+        subject_ids = ClassAssignment.objects.filter(teacher=teacher).values_list('subject_id', flat=True)
+        from classroom.models import Subject
+        teacher_subjects = Subject.objects.filter(id__in=subject_ids)
+    
     students = Student.objects.filter(subjects_enrolled__in=teacher_subjects).distinct()
-   
+    
     if query is not None:
         students = students.filter(Q(name__icontains=query) | Q(user__username__icontains=query))
-       
+        
     context = {
         "class_students_list": students,
         "teacher_subjects": teacher_subjects,
