@@ -201,59 +201,61 @@ class StudentAllMarksList(LoginRequiredMixin, DetailView):
     template_name = "classroom/student_allmarks_list.html"
     context_object_name = "student"
 
-## To enter results (percentages and symbols) for each subject in a table format.
 @login_required
 def enter_results(request, pk):
-    student = get_object_or_404(models.Student, pk=pk)
+    student = get_object_or_404(Student, pk=pk)
     teacher = request.user.Teacher
-    
-    teacher_subjects = []
-    for field_name in ['subjects', 'subject', 'subjects_taught', 'taught_subjects']:
-        if hasattr(teacher, field_name):
-            attr = getattr(teacher, field_name)
-            if hasattr(attr, 'all'):
-                teacher_subjects = attr.all()
-                if teacher_subjects.exists():
-                    break
-                    
-    if not teacher_subjects:
-        subject_ids = ClassAssignment.objects.filter(teacher=teacher).values_list('subject_id', flat=True)
-        from classroom.models import Subject
-        teacher_subjects = Subject.objects.filter(id__in=subject_ids)
-        
-    if hasattr(student, 'subjects_enrolled'):
-        enrolled = student.subjects_enrolled.all()
-        if enrolled.exists():
-            teacher_subjects = teacher_subjects.filter(id__in=enrolled.values_list('id', flat=True))
+
+    # Get subjects taught by teacher AND enrolled by student
+    teacher_subjects = teacher.subjects_taught.filter(
+        id__in=student.subjects_enrolled.values_list('id', flat=True)
+    )
+
+    # Fallback to all enrolled subjects if teacher list is not set
+    if not teacher_subjects.exists():
+        teacher_subjects = student.subjects_enrolled.all()
 
     if request.method == "POST":
         for subject in teacher_subjects:
             percentage = request.POST.get(f'percentage_{subject.id}')
             symbol = request.POST.get(f'symbol_{subject.id}')
-            
+
             if percentage is not None and percentage != '':
                 marks_obj, created = StudentMarks.objects.get_or_create(
                     teacher=teacher,
                     student=student,
-                    subject=subject,
+                    subject_name=subject.name, # Uses subject_name CharField
                     defaults={'marks_obtained': percentage, 'symbol': symbol}
                 )
                 if not created:
                     marks_obj.marks_obtained = percentage
-                    if hasattr(marks_obj, 'symbol'):
-                        marks_obj.symbol = symbol
+                    marks_obj.symbol = symbol
                     marks_obj.save()
-                    
+
         messages.success(request, 'Results entered successfully!')
         return redirect('classroom:class_students_list')
 
-    existing_results = {m.subject_name: m for m in StudentMarks.objects.filter(teacher=teacher, student=student)}
+    # Fetch existing results
+    existing_results = {
+        m.subject_name: m for m in StudentMarks.objects.filter(teacher=teacher, student=student)
+    }
+
+    # Build subjects_data list required by add_marks.html template
+    subjects_data = []
+    for subject in teacher_subjects:
+        mark_obj = existing_results.get(subject.name)
+        subjects_data.append({
+            'subject': subject,
+            'percentage': mark_obj.marks_obtained if mark_obj else '',
+            'symbol': mark_obj.symbol if mark_obj else '',
+        })
 
     return render(request, 'classroom/add_marks.html', {
         'student': student,
-        'teacher_subjects': teacher_subjects,
-        'existing_results': existing_results,
+        'subjects_data': subjects_data,
     })
+
+
 
 # Aliases for template compatibility
 enter_marks = enter_results
