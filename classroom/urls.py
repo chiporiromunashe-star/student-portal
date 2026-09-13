@@ -38,6 +38,6 @@ urlpatterns = [
     path('dashboard/student/', views.student_dashboard, name='student_dashboard'),
     path('subjects/', views.subject_list, name='subject_list'),
     path('dashboard/teacher/', views.teacher_dashboard, name='teacher_dashboard'),
-    path('teacher/subjects/', views.update_teacher_subjects, name='teacher_subjects'),
-    path('student/subjects/', views.update_student_subjects, name='student_subjects'),
+    path('teacher/subjects/', views.update_teacher_subjects, name='update_teacher_subjects'),
+    path('student/subjects/', views.update_student_subjects, name='update_student_subjects'),
 ]
