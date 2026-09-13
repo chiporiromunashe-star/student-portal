@@ -599,9 +599,10 @@ def class_students_list(request):
         "class_students_list": students,
         "teacher_subjects": teacher_subjects,
     }
-    return render(request, "classroom/class_students_list.html", context)
- @login_required
- def student_transcript(request, pk):
+    return render(request, "classroom/class_students_list.html", context
+                 
+@login_required
+def student_transcript(request, pk):
     student = get_object_or_404(Student, pk=pk)
     
     # Fetch all marks for this student
