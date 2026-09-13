@@ -41,11 +41,11 @@
                     {% endfor %}
                   </td>
                   <td class="text-center">
-                    <a href="{% url 'classroom:add_marks' pk=student.pk %}" class="btn btn-primary btn-sm px-3 rounded-pill me-1">
-                      Add Marks
+                    <a href="{% url 'classroom:enter_results' pk=student.pk %}" class="btn btn-primary btn-sm px-3 rounded-pill me-1">
+                      Enter Results
                     </a>
                     <a href="{% url 'classroom:student_marks_list' pk=student.pk %}" class="btn btn-outline-secondary btn-sm px-3 rounded-pill">
-                      View Marks
+                      View Transcript
                     </a>
                   </td>
                 </tr>
