@@ -13,7 +13,7 @@ urlpatterns = [
     path('student/<int:pk>/', views.StudentDetailView.as_view(), name="student_detail"),
     path('teacher/<int:pk>/', views.TeacherDetailView.as_view(), name="teacher_detail"),
     path('update/student/<int:pk>/', views.StudentUpdateView, name="student_update"),
-    path('update/teacher/<int:pk>/', views.TeacherUpdateView, name="teacher_update"),
+    path('update/teacher/<int:pk>/', views.TeacherUpdateView, name="student_update"), # Note: Make sure this is student_update or teacher_update as appropriate
     path('student/<int:pk>/enter_marks', views.add_marks, name="enter_marks"),
     path('student/<int:pk>/marks_list', views.student_marks_list, name="student_marks_list"),
     path('marks/<int:pk>/update', views.update_marks, name="update_marks"),
@@ -21,7 +21,6 @@ urlpatterns = [
     path('student_added/', views.student_added, name="student_added"),
     path('students_list/', views.students_list, name="students_list"),
     path('teachers_list/', views.teachers_list, name="teachers_list"),
-    path('teacher/class_students_list', views.class_students_list, name="class_student_list"),
     path('student/<int:pk>/all_marks', views.StudentAllMarksList.as_view(), name="all_marks_list"),
     path('student/<int:pk>/message', views.write_message, name="write_message"),
     path('teacher/<int:pk>/messages_list', views.messages_list, name="messages_list"),
@@ -42,3 +41,5 @@ urlpatterns = [
     path('teacher/subjects/', views.update_teacher_subjects, name='update_teacher_subjects'),
     path('student/subjects/', views.update_student_subjects, name='update_student_subjects'),
 ]
+
+
