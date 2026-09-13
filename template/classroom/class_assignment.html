@@ -5,24 +5,21 @@
   <div class="row justify-content-center">
     <div class="col-lg-11">
       <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
-        <div class="card-header bg-primary bg-gradient text-white py-3 px-4 d-flex justify-content-between align-items-center">
-          <h4 class="mb-0 fw-bold"><i class="fas fa-tasks me-2"></i> Class Assignments</h4>
-          <span class="badge bg-light text-primary px-3 py-2 rounded-pill fw-semibold">{{ student.student_assignment.count }} Total</span>
+        <div class="card-header bg-primary text-white py-3 px-4 d-flex justify-content-between align-items-center">
+          <h4 class="mb-0 fw-bold">Class Assignments</h4>
+          <span class="badge bg-light text-primary px-3 py-2 rounded-pill">{{ assignment_list|length }} Total</span>
         </div>
         
         <div class="card-body p-4">
-          {% if student.student_assignment.count == 0 %}
+          {% if not assignment_list %}
             <div class="text-center py-5">
-              <div class="mb-3 text-muted">
-                <i class="fas fa-folder-open fa-3x opacity-50"></i>
-              </div>
               <h5 class="text-secondary fw-semibold">No assignments available yet</h5>
               <p class="text-muted small">Check back later for new tasks from your enrolled subjects.</p>
             </div>
           {% else %}
             <div class="table-responsive">
               <table class="table table-hover align-middle mb-0">
-                <thead class="table-light text-uppercase fs-7 text-secondary">
+                <thead class="table-light text-uppercase text-secondary">
                   <tr>
                     <th scope="col" class="py-3 ps-3">#</th>
                     <th scope="col" class="py-3">Assignment Name</th>
@@ -33,32 +30,23 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for assignment in student.student_assignment.all %}
+                  {% for assignment in assignment_list %}
                     <tr>
                       <th scope="row" class="ps-3 text-muted fw-normal">{{ forloop.counter }}</th>
                       <td class="fw-semibold text-dark">{{ assignment.assignment_name }}</td>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <div class="bg-light text-primary rounded-circle me-2 d-flex align-items-center justify-content-center fw-bold border" style="width: 32px; height: 32px; font-size: 0.8rem;">
-                            {{ assignment.teacher|slice:":1" }}
-                          </div>
-                          <span class="text-secondary">{{ assignment.teacher }}</span>
-                        </div>
-                      </td>
-                      <td class="text-muted small">{{ assignment.created_at|date:"M d, Y, g:i a" }}</td>
+                      <td class="text-secondary">{{ assignment.teacher }}</td>
+                      <td class="text-muted small">{{ assignment.created_at }}</td>
                       <td class="text-center">
-                        <a href="{{ assignment.assignment.url }}" class="btn btn-outline-primary btn-sm rounded-pill px-3" target="_blank">
-                          <i class="fas fa-download me-1"></i> Download
+                        <a href="{{ assignment.assignment.url }}" class="btn btn-outline-primary btn-sm px-3" target="_blank">
+                          Download
                         </a>
                       </td>
                       <td class="text-center">
                         {% if assignment.id in submitted_ids %}
-                          <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 rounded-pill">
-                            <i class="fas fa-check-circle me-1"></i> Submitted
-                          </span>
+                          <span class="badge bg-success px-3 py-2">Submitted</span>
                         {% else %}
-                          <a href="{% url 'classroom:submit_assignment' id=assignment.id %}" class="btn btn-primary btn-sm rounded-pill px-4 shadow-sm">
-                            <i class="fas fa-upload me-1"></i> Submit
+                          <a href="{% url 'classroom:submit_assignment' id=assignment.id %}" class="btn btn-primary btn-sm px-4">
+                            Submit
                           </a>
                         {% endif %}
                       </td>
