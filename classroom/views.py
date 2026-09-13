@@ -600,6 +600,31 @@ def class_students_list(request):
         "teacher_subjects": teacher_subjects,
     }
     return render(request, "classroom/class_students_list.html", context)
+ @login_required
+ def student_transcript(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    
+    # Fetch all marks for this student
+    marks = StudentMarks.objects.filter(student=student)
+    
+    # Calculate average mark if numerical marks exist
+    total_marks = 0
+    count = 0
+    for mark in marks:
+        try:
+            total_marks += float(mark.marks_obtained)
+            count += 1
+        except (ValueError, TypeError):
+            pass
+            
+    average_mark = round(total_marks / count, 2) if count > 0 else None
+
+    return render(request, 'classroom/student_transcript.html', {
+        'student': student,
+        'marks': marks,
+        'average_mark': average_mark,
+    })
+
 
 
 
