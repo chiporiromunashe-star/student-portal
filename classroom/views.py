@@ -567,6 +567,27 @@ def submit_list(request):
     teacher = request.user.Teacher
     submissions = SubmitAssignment.objects.filter(teacher=teacher)
     return render(request, 'classroom/submit_list.html', {'teacher': teacher, 'submissions': submissions})
+  @login_required
+def class_students_list(request):
+    teacher = request.user.Teacher
+    query = request.GET.get("q", None)
+    
+    teacher_subjects = []
+    if hasattr(teacher, 'subjects'):
+        teacher_subjects = teacher.subjects.all()
+    elif hasattr(teacher, 'subject'):
+        teacher_subjects = teacher.subject.all()
+        
+    students = Student.objects.filter(subjects_enrolled__in=teacher_subjects).distinct()
+    
+    if query is not None:
+        students = students.filter(Q(name__icontains=query) | Q(user__username__icontains=query))
+        
+    context = {
+        "class_students_list": students,
+        "teacher_subjects": teacher_subjects,
+    }
+    return render(request, "classroom/class_students_list.html", context)
 
 
 
