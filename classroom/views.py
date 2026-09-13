@@ -201,26 +201,63 @@ class StudentAllMarksList(LoginRequiredMixin, DetailView):
     template_name = "classroom/student_allmarks_list.html"
     context_object_name = "student"
 
-## To give marks to a student.
+## To enter results (percentages and symbols) for each subject in a table format.
 @login_required
-def add_marks(request, pk):
-    marks_given = False
+def enter_results(request, pk):
     student = get_object_or_404(models.Student, pk=pk)
-    if request.method == "POST":
-        form = MarksForm(request.POST)
-        if form.is_valid():
-            marks = form.save(commit=False)
-            marks.student = student
-            marks.teacher = request.user.Teacher
-            marks.save()
-            messages.success(request, 'Marks uploaded successfully!')
-            return redirect('classroom:submit_list')
-    else:
-        form = MarksForm()
-    return render(request, 'classroom/add_marks.html', {'form': form, 'student': student, 'marks_given': marks_given})
+    teacher = request.user.Teacher
+    
+    teacher_subjects = []
+    for field_name in ['subjects', 'subject', 'subjects_taught', 'taught_subjects']:
+        if hasattr(teacher, field_name):
+            attr = getattr(teacher, field_name)
+            if hasattr(attr, 'all'):
+                teacher_subjects = attr.all()
+                if teacher_subjects.exists():
+                    break
+                    
+    if not teacher_subjects:
+        subject_ids = ClassAssignment.objects.filter(teacher=teacher).values_list('subject_id', flat=True)
+        from classroom.models import Subject
+        teacher_subjects = Subject.objects.filter(id__in=subject_ids)
+        
+    if hasattr(student, 'subjects_enrolled'):
+        enrolled = student.subjects_enrolled.all()
+        if enrolled.exists():
+            teacher_subjects = teacher_subjects.filter(id__in=enrolled.values_list('id', flat=True))
 
-# Alias view function to handle 'enter_marks' reverse lookup referenced in template
-enter_marks = add_marks
+    if request.method == "POST":
+        for subject in teacher_subjects:
+            percentage = request.POST.get(f'percentage_{subject.id}')
+            symbol = request.POST.get(f'symbol_{subject.id}')
+            
+            if percentage is not None and percentage != '':
+                marks_obj, created = StudentMarks.objects.get_or_create(
+                    teacher=teacher,
+                    student=student,
+                    subject=subject,
+                    defaults={'marks_obtained': percentage, 'symbol': symbol}
+                )
+                if not created:
+                    marks_obj.marks_obtained = percentage
+                    if hasattr(marks_obj, 'symbol'):
+                        marks_obj.symbol = symbol
+                    marks_obj.save()
+                    
+        messages.success(request, 'Results entered successfully!')
+        return redirect('classroom:class_students_list')
+
+    existing_results = {m.subject_id: m for m in StudentMarks.objects.filter(teacher=teacher, student=student)}
+
+    return render(request, 'classroom/add_marks.html', {
+        'student': student,
+        'teacher_subjects': teacher_subjects,
+        'existing_results': existing_results,
+    })
+
+# Aliases for template compatibility
+enter_marks = enter_results
+add_marks = enter_results
 
 ## For updating marks.
 @login_required
@@ -287,13 +324,11 @@ def class_notice(request, pk):
     student = get_object_or_404(models.Student, pk=pk)
     return render(request, 'classroom/class_notice_list.html', {'student': student})
 
-## To see the list of all the marks given by the teacher to a specific student.
+## Transcript view to see all results given to a specific student.
 @login_required
 def student_marks_list(request, pk):
-    error = True
     student = get_object_or_404(models.Student, pk=pk)
-    teacher = request.user.Teacher
-    given_marks = StudentMarks.objects.filter(teacher=teacher, student=student)
+    given_marks = StudentMarks.objects.filter(student=student)
     return render(request, 'classroom/student_marks_list.html', {'student': student, 'given_marks': given_marks})
 
 ## To add student in the class.
@@ -563,6 +598,8 @@ def class_students_list(request):
         "teacher_subjects": teacher_subjects,
     }
     return render(request, "classroom/class_students_list.html", context)
+
+
 
 
 
