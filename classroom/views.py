@@ -561,6 +561,12 @@ def account_view(request):
         return redirect('classroom:account')
        
     return render(request, 'classroom/account.html', {'profile': profile})
+  
+@login_required
+def submit_list(request):
+    teacher = request.user.Teacher
+    submissions = SubmitAssignment.objects.filter(teacher=teacher)
+    return render(request, 'classroom/submit_list.html', {'teacher': teacher, 'submissions': submissions})
 
 
 
