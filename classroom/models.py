@@ -62,10 +62,11 @@ class StudentMarks(models.Model):
     student = models.ForeignKey(Student,related_name="marks",on_delete=models.CASCADE)
     subject_name = models.CharField(max_length=250)
     marks_obtained = models.IntegerField()
-    maximum_marks = models.IntegerField()
+    maximum_marks = models.IntegerField(default=100)
+    symbol = models.CharField(max_length=10 , blank=True , null=True)
 
     def __str__(self):
-        return self.subject_name
+        return f"{self.subject_name} - {self.subject_name}"
 
 class StudentsInClass(models.Model):
     teacher = models.ForeignKey(Teacher,related_name="class_teacher",on_delete=models.CASCADE)
