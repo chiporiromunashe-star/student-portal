@@ -517,8 +517,7 @@ def account_view(request):
                 profile.student_profile_pic = request.FILES['profile_picture']
             elif is_teacher and 'profile_picture' in request.FILES:
                 profile.teacher_profile_pic = request.FILES['profile_picture']
-               
-            profile.save()
+         profile.save()
 
         messages.success(request, 'Your account has been updated successfully!')
         return redirect('classroom:account')
@@ -536,7 +535,6 @@ def class_students_list(request):
     teacher = request.user.Teacher
     query = request.GET.get("q", None)
     
-    # Safely check all possible field names for teacher subjects
     teacher_subjects = []
     for field_name in ['subjects', 'subject', 'subjects_taught', 'taught_subjects']:
         if hasattr(teacher, field_name):
@@ -546,7 +544,6 @@ def class_students_list(request):
                 if teacher_subjects.exists():
                     break
                     
-    # Fallback: if no direct teacher subjects found, check subjects from teacher's assignments
     if not teacher_subjects:
         subject_ids = ClassAssignment.objects.filter(teacher=teacher).values_list('subject_id', flat=True)
         from classroom.models import Subject
