@@ -410,13 +410,16 @@ def class_assignment(request):
     if student:
         enrolled_subjects = student.subjects_enrolled.all()
         assignment_list = ClassAssignment.objects.filter(subject__in=enrolled_subjects)
+        submitted_ids = SubmitAssignment.objects.filter(student=student).values_list('submitted_assignment_id', flat=True)
     else:
         student = None
         assignment_list = []
+        submitted_ids = []
 
     return render(request, 'classroom/class_assignment.html', {
         'student': student,
-        'assignment_list': assignment_list
+        'assignment_list': assignment_list,
+        'submitted_ids': submitted_ids
     })
 
 # of all the assignments uploaded by the teacher himself.
