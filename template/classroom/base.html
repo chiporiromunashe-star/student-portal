@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Manager</title>
     
-    <!-- Bootstrap & Styles -->
+    <!-- Bootstrap & Fonts -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -29,17 +29,41 @@
         object-fit: cover;
       }
 
-      /* Single Top Navbar */
+      /* Navbar Flex Alignment */
       nav.custom-navbar {
         background-color: #002b5c;
         height: 60px;
         padding: 0 25px;
         display: flex;
         align-items: center;
-        justify-content: flex-end; /* Far right alignment */
+        justify-content: space-between; /* Space out Back Arrow (Left) & Profile (Right) */
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       }
 
+      /* Back Arrow Button (Left Side) */
+      .back-btn {
+        color: #ffffff;
+        text-decoration: none !important;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 6px;
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+
+      .back-btn:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: #ffffff;
+      }
+
+      .back-btn i {
+        font-size: 1.1rem;
+      }
+
+      /* Profile Dropdown Wrapper (Right Side) */
       .profile-dropdown-wrapper {
         position: relative;
         display: inline-block;
@@ -77,7 +101,7 @@
         opacity: 0.8;
       }
 
-      /* Right Dropdown Popup */
+      /* Dropdown Popup */
       .profile-popup-menu {
         display: none;
         position: absolute;
@@ -149,42 +173,45 @@
   </head>
   <body>
 
-    <!-- SINGLE TOP NAVBAR -->
     <nav class="custom-navbar">
-      {% if request.resolver_match.url_name != 'login' %}
-        {% if user.is_authenticated %}
-          <div class="profile-dropdown-wrapper">
-            <button type="button" class="profile-trigger-btn" id="profileDropdownBtn">
-              <i class="fas fa-user-circle"></i>
-              <span class="user-display-name">{{ user.first_name|default:user.username }}</span>
-              <i class="fas fa-chevron-down arrow-down"></i>
-            </button>
+      <!-- LEFT SIDE: Back Arrow to Dashboard -->
+      <div class="navbar-left">
+        {% if request.resolver_match.url_name != 'dashboard' and request.resolver_match.url_name != 'login' %}
+          <a href="{% url 'classroom:dashboard' %}" class="back-btn" title="Return to Dashboard">
+            <i class="fas fa-arrow-left"></i>
+            <span>Dashboard</span>
+          </a>
+        {% endif %}
+      </div>
 
-            <div class="profile-popup-menu" id="profileDropdownMenu">
-              {% if request.resolver_match.url_name == 'account' %}
-                <!-- If on Account page, show option to return to Dashboard -->
-                <a href="javascript:history.back()" class="popup-item">
-                  <i class="fas fa-arrow-left"></i>
-                  Dashboard
-                </a>
-              {% else %}
-                <!-- If on Dashboard, click to open Profile / Account Settings -->
+      <!-- RIGHT SIDE: Profile Dropdown -->
+      <div class="navbar-right">
+        {% if request.resolver_match.url_name != 'login' %}
+          {% if user.is_authenticated %}
+            <div class="profile-dropdown-wrapper">
+              <button type="button" class="profile-trigger-btn" id="profileDropdownBtn">
+                <i class="fas fa-user-circle"></i>
+                <span class="user-display-name">{{ user.first_name|default:user.username }}</span>
+                <i class="fas fa-chevron-down arrow-down"></i>
+              </button>
+
+              <div class="profile-popup-menu" id="profileDropdownMenu">
                 <a href="{% url 'classroom:account' %}" class="popup-item">
                   <i class="fas fa-user"></i>
                   Profile
                 </a>
-              {% endif %}
 
-              <div class="popup-divider"></div>
+                <div class="popup-divider"></div>
 
-              <a href="{% url 'classroom:logout' %}" class="popup-item logout-link">
-                <i class="fas fa-sign-out-alt"></i>
-                Logout
-              </a>
+                <a href="{% url 'classroom:logout' %}" class="popup-item logout-link">
+                  <i class="fas fa-sign-out-alt"></i>
+                  Logout
+                </a>
+              </div>
             </div>
-          </div>
+          {% endif %}
         {% endif %}
-      {% endif %}
+      </div>
     </nav>
 
     {% block content %}
