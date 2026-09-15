@@ -12,52 +12,59 @@
      TRIED AND TESTED ACADEMY — ULTRA MODERN & SIMPLE LOGIN
      ========================================================= */
 
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
   .login-page {
     min-height: 100vh;
     width: 100%;
-    position: relative;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-    box-sizing: border-box;
+    padding: 24px 16px;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     background: #f4f7f9; 
   }
 
   .login-wrapper {
-    position: relative;
-    z-index: 2;
-    width: min(450px, 100%);
-    padding-bottom: 40px;
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
+  /* School name */
   .school-header {
     text-align: center;
     color: #0f172a;
-    margin-bottom: 25px;
-    padding: 0 10px;
+    margin-bottom: 24px;
+    width: 100%;
   }
 
   .school-name {
     margin: 0;
-    font-size: clamp(20px, 5vw, 32px);
-    line-height: 1.1;
-    letter-spacing: 1px;
+    font-size: clamp(20px, 5vw, 28px);
+    line-height: 1.2;
+    letter-spacing: 0.5px;
     font-weight: 800;
     text-transform: uppercase;
+    word-break: break-word;
   }
 
   .school-tagline {
     margin: 8px 0 0;
-    font-size: 12px;
-    letter-spacing: 3px;
+    font-size: 11px;
+    letter-spacing: 2px;
     text-transform: uppercase;
     color: #64748b;
     font-weight: 600;
   }
 
   .login-card {
+    width: 100%;
     background: #ffffff;
     border-radius: 24px;
     overflow: hidden;
@@ -65,31 +72,24 @@
     border: 1px solid rgba(0,0,0,0.04);
   }
 
+  /* Login form layout */
   .login-form {
-    padding: 45px 40px;
+    padding: 40px 28px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    box-sizing: border-box;
-  }
-
-  .login-title {
-    margin: 0;
-    color: #0f172a;
-    font-size: 34px;
-    font-weight: 800;
-    letter-spacing: -1px;
-    text-align: center;
+    width: 100%;
   }
 
   .login-subtitle {
-    margin: 8px 0 30px;
+    margin: 0 0 28px;
     color: #64748b;
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 600;
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 1px;
+    word-break: break-word;
   }
 
   .messages {
@@ -108,6 +108,7 @@
   .input-group {
     position: relative;
     margin-bottom: 20px;
+    width: 100%;
   }
 
   .input-label {
@@ -121,7 +122,6 @@
   .input-group input {
     width: 100%;
     height: 52px;
-    box-sizing: border-box;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
     background: #f8fafc;
@@ -142,6 +142,7 @@
     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
   }
 
+  /* Primary Button (Login) */
   .login-button {
     width: 100%;
     height: 52px;
@@ -167,7 +168,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    margin: 25px 0 20px;
+    margin: 24px 0 20px;
     color: #94a3b8;
     font-size: 12px;
     font-weight: 500;
@@ -181,38 +182,31 @@
     background: #e2e8f0;
   }
 
-  /* 
-     UPDATED SIGN UP BUTTON: 
-     Added !important to text color to prevent base.html from making it white. 
-     Added a light grey background so it looks like a distinct button.
-  */
+  /* Secondary Button (Sign Up) */
   .signup-button {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
     height: 52px;
-    border: 1px solid #cbd5e1;
+    border: 1px solid #e2e8f0;
     border-radius: 12px;
-    background: #f8fafc;
-    color: #0f172a !important; /* Force dark text */
+    background: #ffffff;
+    color: #0f172a;
     font-size: 15px;
-    font-weight: 700;
-    text-decoration: none !important; /* Remove link underline */
+    font-weight: 600;
+    text-decoration: none;
     transition: all 0.2s ease;
   }
 
   .signup-button:hover {
-    background: #e2e8f0;
-    border-color: #94a3b8;
-    color: #0f172a !important;
+    background: #f8fafc;
+    border-color: #cbd5e1;
   }
 
+  /* Bottom credit in natural document flow to prevent mobile clipping */
   .designer-credit {
-    position: absolute;
-    bottom: 20px;
-    left: 0;
-    right: 0;
+    margin-top: 28px;
     text-align: center;
     color: #64748b;
     font-size: 12px;
@@ -221,26 +215,15 @@
     text-transform: uppercase;
   }
 
-  @media (max-width: 500px) {
-    .login-page {
-      padding: 15px;
-    }
-
-    .school-header {
-      margin-bottom: 20px;
+  /* Mobile Tweaks */
+  @media (max-width: 480px) {
+    .login-form {
+      padding: 32px 20px;
     }
 
     .school-tagline {
       font-size: 10px;
-      letter-spacing: 2px;
-    }
-
-    .login-form {
-      padding: 35px 25px;
-    }
-
-    .login-title {
-      font-size: 28px;
+      letter-spacing: 1.5px;
     }
   }
 </style>
@@ -257,7 +240,6 @@
     <div class="login-card">
       <section class="login-form">
 
-        <h2 class="login-title">Sign in</h2>
         <p class="login-subtitle">Enter your details below</p>
 
         {% if messages %}
@@ -302,14 +284,15 @@
 
         <div class="divider"><span>OR</span></div>
 
-        <!-- The Sign Up button is now properly visible -->
         <a href="{% url 'classroom:signup' %}" class="signup-button">Create an account</a>
 
       </section>
     </div>
+
+    <div class="designer-credit">Designed by Chiporiro Munashe</div>
+
   </div>
 
-  <div class="designer-credit">Designed by Chiporiro Munashe</div>
 </div>
 
 {% endblock %}
