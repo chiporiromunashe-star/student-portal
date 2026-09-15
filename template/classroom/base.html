@@ -173,15 +173,13 @@
   </head>
   <body>
 
-    <nav class="custom-navbar">
-      <!-- LEFT SIDE: Back Arrow to Dashboard -->
-      <div class="navbar-left">
-        {% if request.resolver_match.url_name != 'dashboard' and request.resolver_match.url_name != 'login' %}
-          <a href="{% url 'classroom:dashboard' %}" class="back-btn" title="Return to Dashboard">
-            <i class="fas fa-arrow-left"></i>
-            <span>Dashboard</span>
-          </a>
-        {% endif %}
+   <div class="navbar-left">
+  {% if request.resolver_match.url_name != 'login' %}
+    <a href="javascript:history.back()" class="back-btn" title="Go Back">
+      <i class="fas fa-arrow-left"></i>
+      <span>Back</span>
+    </a>
+  {% endif %}
       </div>
 
       <!-- RIGHT SIDE: Profile Dropdown -->
