@@ -4,8 +4,7 @@
 
 <style>
   /* =========================================================
-     TRIED AND TESTED ACADEMY — MODERN LOGIN PAGE
-     CSS is intentionally kept inside this template.
+     TRIED AND TESTED ACADEMY — MODERN LOGIN PAGE (SINGLE COLUMN)
      ========================================================= */
 
   .login-page {
@@ -16,7 +15,7 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    padding: 30px 20px 72px;
+    padding: 20px;
     box-sizing: border-box;
     font-family: "Segoe UI", Arial, sans-serif;
     background:
@@ -54,21 +53,22 @@
   .login-wrapper {
     position: relative;
     z-index: 2;
-    width: min(980px, 100%);
+    /* Reduced max-width to perfectly frame a single centralized form */
+    width: min(450px, 100%);
   }
 
-  /* School name — kept clearly visible and contained at the top */
+  /* School name */
   .school-header {
     text-align: center;
     color: #fff;
-    margin-bottom: 22px;
+    margin-bottom: 25px;
     padding: 0 10px;
   }
 
   .school-name {
     margin: 0;
-    font-size: clamp(25px, 4vw, 42px);
-    line-height: 1.08;
+    font-size: clamp(22px, 5vw, 36px);
+    line-height: 1.1;
     letter-spacing: 2px;
     font-weight: 800;
     text-transform: uppercase;
@@ -84,108 +84,15 @@
   }
 
   .login-card {
-    min-height: 555px;
-    display: grid;
-    grid-template-columns: 43% 57%;
     background: rgba(255, 255, 255, .98);
     border-radius: 26px;
     overflow: hidden;
     box-shadow: 0 25px 70px rgba(0, 0, 0, .28);
   }
 
-  /* Left welcome panel — inspired by the second reference image */
-  .welcome-panel {
-    position: relative;
-    padding: 55px 42px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    color: #fff;
-    overflow: hidden;
-    background: linear-gradient(145deg, #063b78, #0b70b8);
-  }
-
-  .welcome-panel::before {
-    content: "";
-    position: absolute;
-    width: 330px;
-    height: 330px;
-    border-radius: 50%;
-    background: rgba(255,255,255,.08);
-    top: -170px;
-    right: -140px;
-  }
-
-  .welcome-panel::after {
-    content: "";
-    position: absolute;
-    width: 250px;
-    height: 250px;
-    border-radius: 50%;
-    background: rgba(0, 174, 239, .20);
-    bottom: -125px;
-    left: -115px;
-  }
-
-  .welcome-content {
-    position: relative;
-    z-index: 2;
-  }
-
-  .logo-ring {
-    width: 92px;
-    height: 92px;
-    border-radius: 50%;
-    background: #fff;
-    padding: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 30px;
-    box-shadow: 0 10px 25px rgba(0,0,0,.18);
-  }
-
-  .logo-ring img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: 50%;
-  }
-
-  .welcome-panel h2 {
-    margin: 0 0 12px;
-    font-size: 38px;
-    line-height: 1.05;
-    font-weight: 800;
-    letter-spacing: .5px;
-  }
-
-  .welcome-panel p {
-    margin: 0;
-    max-width: 320px;
-    line-height: 1.7;
-    font-size: 14px;
-    color: rgba(255,255,255,.88);
-  }
-
-  .welcome-line {
-    width: 55px;
-    height: 4px;
-    border-radius: 10px;
-    background: #fff;
-    margin: 22px 0;
-  }
-
-  .welcome-note {
-    font-size: 12px !important;
-    letter-spacing: .7px;
-    text-transform: uppercase;
-    opacity: .75;
-  }
-
-  /* Right login form */
+  /* Login form layout */
   .login-form {
-    padding: 48px clamp(28px, 5vw, 65px) 30px;
+    padding: 45px 40px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -195,15 +102,19 @@
   .login-title {
     margin: 0;
     color: #17212b;
-    font-size: 40px;
+    font-size: 36px;
     font-weight: 800;
     letter-spacing: -.5px;
+    text-align: center;
   }
 
   .login-subtitle {
-    margin: 7px 0 30px;
+    margin: 7px 0 25px;
     color: #89939d;
     font-size: 13px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
   }
 
   .messages {
@@ -214,6 +125,8 @@
     border-radius: 10px;
     margin-bottom: 6px;
     font-size: 13px;
+    padding: 10px;
+    text-align: center;
   }
 
   .input-group {
@@ -256,7 +169,7 @@
   .login-button {
     width: 100%;
     height: 52px;
-    margin-top: 5px;
+    margin-top: 10px;
     border: 0;
     border-radius: 10px;
     background: linear-gradient(135deg, #06457f, #0878bd);
@@ -278,7 +191,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    margin: 22px 0 17px;
+    margin: 25px 0 20px;
     color: #a3abb2;
     font-size: 12px;
   }
@@ -324,106 +237,46 @@
   }
 
   /* Mobile */
-  @media (max-width: 760px) {
+  @media (max-width: 500px) {
     .login-page {
-      padding: 22px 14px 62px;
-      align-items: flex-start;
+      padding: 15px 15px 50px;
     }
 
     .school-header {
-      margin-bottom: 18px;
-    }
-
-    .school-name {
-      font-size: clamp(22px, 7vw, 31px);
-      letter-spacing: 1px;
+      margin-bottom: 20px;
     }
 
     .school-tagline {
-      font-size: 9px;
-      letter-spacing: 1.8px;
-    }
-
-    .login-card {
-      grid-template-columns: 1fr;
-      min-height: auto;
-      border-radius: 20px;
-    }
-
-    .welcome-panel {
-      padding: 30px 28px;
-      min-height: 205px;
-    }
-
-    .logo-ring {
-      width: 65px;
-      height: 65px;
-      margin-bottom: 17px;
-    }
-
-    .welcome-panel h2 {
-      font-size: 28px;
-    }
-
-    .welcome-panel p {
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .welcome-line,
-    .welcome-note {
-      display: none;
+      font-size: 10px;
+      letter-spacing: 2px;
     }
 
     .login-form {
-      padding: 32px 25px 28px;
+      padding: 35px 25px;
     }
 
     .login-title {
       font-size: 32px;
-    }
-
-    .login-subtitle {
-      margin-bottom: 23px;
     }
   }
 </style>
 
 <div class="login-page">
 
-  <!-- Existing background image is retained and used by the CSS above -->
   <img src="{% static 'images/login-background.png' %}" alt="">
 
   <div class="login-wrapper">
 
-    <!-- School name retained and resized responsively so it fits cleanly -->
     <header class="school-header">
       <h1 class="school-name">TRIED AND TESTED ACADEMY</h1>
       <p class="school-tagline">Excellence • Discipline • Innovation</p>
     </header>
 
     <div class="login-card">
-
-      <!-- Welcome / branding side -->
-      <section class="welcome-panel">
-        <div class="welcome-content">
-
-         
-
-          <h2>Welcome Back</h2>
-          <div class="welcome-line"></div>
-
-        
-
-          <p class="welcome-note">Your future starts with excellence.</p>
-        </div>
-      </section>
-
-      <!-- Login side -->
       <section class="login-form">
 
         <h2 class="login-title">Sign in</h2>
-        <p class="login-subtitle">ENTER YOUR DETAILS.</p>
+        <p class="login-subtitle">Enter your details below</p>
 
         {% if messages %}
         <div class="messages">
@@ -467,9 +320,8 @@
 
         <div class="divider"><span>OR</span></div>
 
-        <!-- Signup option intentionally retained -->
         <p class="signup-text">
-       
+          Don't have an account? 
           <a href="{% url 'classroom:signup' %}">Sign up</a>
         </p>
 
