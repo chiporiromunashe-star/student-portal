@@ -6,16 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Manager</title>
     
-    <!-- Latest compiled and minified CSS -->
+    <!-- Bootstrap & Styles -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-
-    <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-    <!-- Popper JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-
-    <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
@@ -23,8 +17,6 @@
     <link rel="stylesheet" href="{% static 'css/searchbar.css' %}">
     <link rel="stylesheet" href="{% static 'css/newbase.css' %}">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Source+Sans+Pro&display=swap" rel="stylesheet">
 
     {% load bootstrap4 %}
     {% bootstrap_css %}
@@ -36,20 +28,15 @@
         height: auto;
         object-fit: cover;
       }
-      .background-container {
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-      }
 
-      /* Navbar Positioning & Right Alignment */
+      /* Single Top Navbar */
       nav.custom-navbar {
         background-color: #002b5c;
         height: 60px;
         padding: 0 25px;
         display: flex;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: flex-end; /* Far right alignment */
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       }
 
@@ -90,13 +77,13 @@
         opacity: 0.8;
       }
 
-      /* Right-Aligned Dropdown Popup */
+      /* Right Dropdown Popup */
       .profile-popup-menu {
         display: none;
         position: absolute;
         top: calc(100% + 8px);
         right: 0;
-        min-width: 160px;
+        min-width: 170px;
         background: #ffffff;
         border-radius: 8px;
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
@@ -110,7 +97,6 @@
         animation: popupFade 0.15s ease-in-out;
       }
 
-      /* Dropdown Links */
       .popup-item {
         display: flex;
         align-items: center;
@@ -163,23 +149,31 @@
   </head>
   <body>
 
+    <!-- SINGLE TOP NAVBAR -->
     <nav class="custom-navbar">
       {% if request.resolver_match.url_name != 'login' %}
         {% if user.is_authenticated %}
           <div class="profile-dropdown-wrapper">
-            <!-- Profile Icon Button on the Far Right -->
             <button type="button" class="profile-trigger-btn" id="profileDropdownBtn">
               <i class="fas fa-user-circle"></i>
               <span class="user-display-name">{{ user.first_name|default:user.username }}</span>
               <i class="fas fa-chevron-down arrow-down"></i>
             </button>
 
-            <!-- CUT-style Popup Dropdown -->
             <div class="profile-popup-menu" id="profileDropdownMenu">
-              <a href="{% url 'classroom:account' %}" class="popup-item">
-                <i class="fas fa-user"></i>
-                Profile
-              </a>
+              {% if request.resolver_match.url_name == 'account' %}
+                <!-- If on Account page, show option to return to Dashboard -->
+                <a href="javascript:history.back()" class="popup-item">
+                  <i class="fas fa-arrow-left"></i>
+                  Dashboard
+                </a>
+              {% else %}
+                <!-- If on Dashboard, click to open Profile / Account Settings -->
+                <a href="{% url 'classroom:account' %}" class="popup-item">
+                  <i class="fas fa-user"></i>
+                  Profile
+                </a>
+              {% endif %}
 
               <div class="popup-divider"></div>
 
@@ -202,13 +196,11 @@
         const menu = document.getElementById('profileDropdownMenu');
 
         if (btn && menu) {
-          // Toggle dropdown visibility on click
           btn.addEventListener('click', function (e) {
             e.stopPropagation();
             menu.classList.toggle('show');
           });
 
-          // Close popup menu when clicking anywhere outside
           document.addEventListener('click', function (e) {
             if (!menu.contains(e.target) && !btn.contains(e.target)) {
               menu.classList.remove('show');
@@ -219,4 +211,3 @@
     </script>
   </body>
 </html>
-
