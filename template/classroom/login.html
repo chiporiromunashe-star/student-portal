@@ -23,9 +23,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 24px 16px;
+    padding: 32px 16px;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background: #f4f7f9; 
+    background: #f4f7f9;
+    overflow-y: auto;
   }
 
   .login-wrapper {
@@ -67,9 +68,9 @@
     width: 100%;
     background: #ffffff;
     border-radius: 24px;
-    overflow: hidden;
     box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(0,0,0,0.04);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    overflow: hidden;
   }
 
   /* Login form layout */
@@ -182,29 +183,33 @@
     background: #e2e8f0;
   }
 
-  /* Secondary Button (Sign Up) */
-  .signup-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 52px;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    background: #ffffff;
-    color: #0f172a;
-    font-size: 15px;
-    font-weight: 600;
-    text-decoration: none;
+  /* Secondary Button (Sign Up) - Enforces high visibility */
+  a.signup-button {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 12px !important;
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
     transition: all 0.2s ease;
   }
 
-  .signup-button:hover {
-    background: #f8fafc;
-    border-color: #cbd5e1;
+  a.signup-button:hover {
+    background-color: #f8fafc !important;
+    border-color: #94a3b8 !important;
+    color: #0f172a !important;
   }
 
-  /* Bottom credit in natural document flow to prevent mobile clipping */
+  /* Bottom credit in natural flex flow to avoid bottom-screen truncation */
   .designer-credit {
     margin-top: 28px;
     text-align: center;
