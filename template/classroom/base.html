@@ -4,18 +4,6 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-      img {
-        max-width: 100%;
-        height: auto;
-        object-fit: cover;
-      }
-      .background-container {
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-      }
-    </style>
     <title>Student Manager</title>
     
     <!-- Latest compiled and minified CSS -->
@@ -41,38 +29,194 @@
     {% load bootstrap4 %}
     {% bootstrap_css %}
     {% bootstrap_javascript jquery='full' %}
+
+    <style>
+      img {
+        max-width: 100%;
+        height: auto;
+        object-fit: cover;
+      }
+      .background-container {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      /* Navbar Positioning & Right Alignment */
+      nav.custom-navbar {
+        background-color: #002b5c;
+        height: 60px;
+        padding: 0 25px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .profile-dropdown-wrapper {
+        position: relative;
+        display: inline-block;
+      }
+
+      /* Profile Trigger Button */
+      .profile-trigger-btn {
+        background: transparent;
+        border: none;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      .profile-trigger-btn:hover {
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      .profile-trigger-btn i.fa-user-circle {
+        font-size: 1.4rem;
+      }
+
+      .user-display-name {
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .arrow-down {
+        font-size: 10px;
+        opacity: 0.8;
+      }
+
+      /* Right-Aligned Dropdown Popup */
+      .profile-popup-menu {
+        display: none;
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        min-width: 160px;
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        border: 1px solid #e2e8f0;
+        z-index: 1000;
+        padding: 6px 0;
+      }
+
+      .profile-popup-menu.show {
+        display: block;
+        animation: popupFade 0.15s ease-in-out;
+      }
+
+      /* Dropdown Links */
+      .popup-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 16px;
+        color: #334155;
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: none !important;
+        width: 100%;
+        border: none;
+        background: none;
+        text-align: left;
+        cursor: pointer;
+        box-sizing: border-box;
+        transition: background 0.15s ease, color 0.15s ease;
+      }
+
+      .popup-item:hover {
+        background-color: #f1f5f9;
+        color: #0284c7;
+      }
+
+      .popup-divider {
+        height: 1px;
+        background-color: #e2e8f0;
+        margin: 4px 0;
+      }
+
+      .logout-link {
+        color: #dc2626;
+      }
+
+      .logout-link:hover {
+        background-color: #fef2f2;
+        color: #b91c1c;
+      }
+
+      @keyframes popupFade {
+        from {
+          opacity: 0;
+          transform: translateY(-5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
   </head>
   <body>
 
-     <nav>
-      <div class="toggle">
-     
-        
-        <!-- Only show the icon if the user is NOT on the login page -->
-        {% if request.resolver_match.url_name != 'login' %}
-            {% if user.is_authenticated %}
-                
-                <!-- If on the account page, make the icon go back/close -->
-                {% if request.resolver_match.url_name == 'account' %}
-                    <a href="javascript:history.back()" style="color: inherit; text-decoration: none; padding-right: 15px;">
-                        <i class="fa fa-bars"></i>
-                    </a>
-                <!-- Otherwise, make the icon open the account page -->
-                {% else %}
-                    <a href="{% url 'classroom:account' %}" style="color: inherit; text-decoration: none; padding-right: 15px;">
-                        <i class="fa fa-bars"></i>
-                    </a>
-                {% endif %}
-                
-            {% endif %}
+    <nav class="custom-navbar">
+      {% if request.resolver_match.url_name != 'login' %}
+        {% if user.is_authenticated %}
+          <div class="profile-dropdown-wrapper">
+            <!-- Profile Icon Button on the Far Right -->
+            <button type="button" class="profile-trigger-btn" id="profileDropdownBtn">
+              <i class="fas fa-user-circle"></i>
+              <span class="user-display-name">{{ user.first_name|default:user.username }}</span>
+              <i class="fas fa-chevron-down arrow-down"></i>
+            </button>
+
+            <!-- CUT-style Popup Dropdown -->
+            <div class="profile-popup-menu" id="profileDropdownMenu">
+              <a href="{% url 'classroom:account' %}" class="popup-item">
+                <i class="fas fa-user"></i>
+                Profile
+              </a>
+
+              <div class="popup-divider"></div>
+
+              <a href="{% url 'classroom:logout' %}" class="popup-item logout-link">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+              </a>
+            </div>
+          </div>
         {% endif %}
-      </div>
+      {% endif %}
     </nav>
 
     {% block content %}
     {% endblock %}
 
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const btn = document.getElementById('profileDropdownBtn');
+        const menu = document.getElementById('profileDropdownMenu');
+
+        if (btn && menu) {
+          // Toggle dropdown visibility on click
+          btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            menu.classList.toggle('show');
+          });
+
+          // Close popup menu when clicking anywhere outside
+          document.addEventListener('click', function (e) {
+            if (!menu.contains(e.target) && !btn.contains(e.target)) {
+              menu.classList.remove('show');
+            }
+          });
+        }
+      });
+    </script>
   </body>
 </html>
-
 
