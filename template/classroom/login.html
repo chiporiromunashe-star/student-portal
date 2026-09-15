@@ -1,41 +1,190 @@
 {% extends 'classroom/base.html' %}
 {% load static %}
+
 {% block content %}
+<style>
+  :root {
+    --primary-blue: #0b2f64;
+    --accent-blue: #16468e;
+    --glass-bg: rgba(255, 255, 255, 0.22);
+    --glass-border: rgba(255, 255, 255, 0.35);
+    --text-white: #ffffff;
+  }
 
+  /* Page container spacing to clear header and push footer to bottom */
+  .login-page-wrapper {
+    min-height: calc(100vh - 100px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 70px 20px 20px;
+    box-sizing: border-box;
+  }
 
+  /* Glassmorphism Card */
+  .login-card {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 55px 28px 30px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+    color: var(--text-white);
+    margin: auto 0;
+  }
 
-<div class="login-page">
-  <img src="{% static 'images/login-background.png' %}" alt="">
-  <div class="login-form">
-    <div class="avatar">
-      <img src="{% static 'images/login-avatar.png' %}" alt="">
+  /* Floating Avatar/Badge */
+  .avatar-badge {
+    position: absolute;
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: #ffffff;
+    padding: 4px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  }
+
+  .avatar-badge img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .login-card h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+    color: var(--text-white);
+  }
+
+  .input-group {
+    margin-bottom: 18px;
+  }
+
+  .input-group label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  .input-group input[type="text"],
+  .input-group input[type="password"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+  }
+
+  .input-group input::placeholder {
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .input-group input:focus {
+    border-bottom-color: #ffffff;
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+  .btn-submit {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary-blue);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+  }
+
+  .btn-submit:hover {
+    background-color: var(--accent-blue);
+  }
+
+  .card-footer-link {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .card-footer-link a {
+    color: var(--text-white);
+    text-decoration: underline;
+    font-size: 0.88rem;
+    opacity: 0.9;
+  }
+
+  /* Bottom Credit Tag */
+  .site-footer {
+    text-align: center;
+    padding: 20px 10px 10px;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+  }
+</style>
+
+<div class="login-page-wrapper">
+  <div class="login-card">
+    <div class="avatar-badge">
+      <img src="{% static 'images/login-avatar.png' %}" alt="Logo">
     </div>
+
     {% if messages %}
     <div class="alert alert-primary alert-dismissible fade show" role="alert">
       {% for message in messages %}
-        <div class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
       {% endfor %}
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     {% endif %}
+
     <h1>Login</h1>
+
     <form action="{% url 'classroom:login' %}" method="post">
       {% csrf_token %}
-      <p>Username:</p>
-      <input type="text" name="username" placeholder="Enter your username">
-      <br>
-      <br>
-      <p>Password:</p>
-      <input type="password" name="password" placeholder="Enter password">
-      <br>
-      <br>
-      <input class="btn btn-primary" type="submit" name="" value="Login">
+      <div class="input-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter password" required>
+      </div>
+
+      <input class="btn-submit" type="submit" value="Login">
     </form>
-    <a href="{% url 'classroom:signup' %}">Don't have an account.</a>
+
+    <div class="card-footer-link">
+      <a href="{% url 'classroom:signup' %}">Don't have an account.</a>
+    </div>
   </div>
+
+  <footer class="site-footer">
+    <p>Designed by Engineer Munashe</p>
+  </footer>
 </div>
-
-
 {% endblock %}
