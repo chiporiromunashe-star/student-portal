@@ -2,9 +2,14 @@
 {% load static %}
 {% block content %}
 
+<!-- Import Modern Font (Inter) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
   /* =========================================================
-     TRIED AND TESTED ACADEMY — MODERN LOGIN PAGE (SINGLE COLUMN)
+     TRIED AND TESTED ACADEMY — ULTRA MODERN & SIMPLE LOGIN
      ========================================================= */
 
   .login-page {
@@ -14,65 +19,36 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
     padding: 20px;
     box-sizing: border-box;
-    font-family: "Segoe UI", Arial, sans-serif;
-    background:
-      linear-gradient(135deg, rgba(5, 37, 76, .96), rgba(13, 91, 156, .90)),
-      url("{% static 'images/login-background.png' %}") center/cover no-repeat;
-  }
-
-  /* Background image is used through CSS so it does not disturb the layout. */
-  .login-page > img {
-    display: none;
-  }
-
-  .login-page::before {
-    content: "";
-    position: absolute;
-    width: 420px;
-    height: 420px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, .07);
-    top: -170px;
-    left: -120px;
-  }
-
-  .login-page::after {
-    content: "";
-    position: absolute;
-    width: 360px;
-    height: 360px;
-    border-radius: 50%;
-    background: rgba(52, 152, 219, .16);
-    right: -130px;
-    bottom: -140px;
+    /* Modern system font stack with Inter prioritized */
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    /* Simple, fast-loading, sleek off-white background */
+    background: #f4f7f9; 
   }
 
   .login-wrapper {
     position: relative;
     z-index: 2;
-    /* Reduced max-width to perfectly frame a single centralized form */
     width: min(450px, 100%);
+    padding-bottom: 40px; /* Space for the credit */
   }
 
   /* School name */
   .school-header {
     text-align: center;
-    color: #fff;
+    color: #0f172a; /* Dark slate for high contrast */
     margin-bottom: 25px;
     padding: 0 10px;
   }
 
   .school-name {
     margin: 0;
-    font-size: clamp(22px, 5vw, 36px);
+    font-size: clamp(20px, 5vw, 32px);
     line-height: 1.1;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     font-weight: 800;
     text-transform: uppercase;
-    text-shadow: 0 3px 12px rgba(0, 0, 0, .25);
   }
 
   .school-tagline {
@@ -80,14 +56,17 @@
     font-size: 12px;
     letter-spacing: 3px;
     text-transform: uppercase;
-    opacity: .88;
+    color: #64748b;
+    font-weight: 600;
   }
 
   .login-card {
-    background: rgba(255, 255, 255, .98);
-    border-radius: 26px;
+    background: #ffffff;
+    border-radius: 24px;
     overflow: hidden;
-    box-shadow: 0 25px 70px rgba(0, 0, 0, .28);
+    /* Soft, modern shadow instead of heavy drop shadow */
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0,0,0,0.04);
   }
 
   /* Login form layout */
@@ -99,19 +78,21 @@
     box-sizing: border-box;
   }
 
+  /* Adjusted Sign In Font */
   .login-title {
     margin: 0;
-    color: #17212b;
-    font-size: 36px;
+    color: #0f172a;
+    font-size: 34px;
     font-weight: 800;
-    letter-spacing: -.5px;
+    letter-spacing: -1px;
     text-align: center;
   }
 
   .login-subtitle {
-    margin: 7px 0 25px;
-    color: #89939d;
+    margin: 8px 0 30px;
+    color: #64748b;
     font-size: 13px;
+    font-weight: 500;
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -122,11 +103,12 @@
   }
 
   .messages .alert {
-    border-radius: 10px;
+    border-radius: 12px;
     margin-bottom: 6px;
     font-size: 13px;
-    padding: 10px;
+    padding: 12px;
     text-align: center;
+    font-weight: 500;
   }
 
   .input-group {
@@ -137,54 +119,55 @@
   .input-label {
     display: block;
     margin-bottom: 8px;
-    color: #35404a;
+    color: #334155;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 600;
   }
 
   .input-group input {
     width: 100%;
     height: 52px;
     box-sizing: border-box;
-    border: 1px solid #e0e5ea;
-    border-radius: 10px;
-    background: #f6f8fa;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
     padding: 0 16px;
-    color: #1e2933;
+    color: #0f172a;
     font-size: 14px;
     outline: none;
-    transition: .25s ease;
+    transition: all 0.2s ease;
   }
 
   .input-group input::placeholder {
-    color: #a5adb5;
+    color: #94a3b8;
   }
 
   .input-group input:focus {
-    background: #fff;
-    border-color: #0b66a9;
-    box-shadow: 0 0 0 4px rgba(11,102,169,.10);
+    background: #ffffff;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
   }
 
+  /* Primary Button (Login) */
   .login-button {
     width: 100%;
     height: 52px;
     margin-top: 10px;
     border: 0;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #06457f, #0878bd);
-    color: #fff;
+    border-radius: 12px;
+    background: #0f172a; /* Sleek dark color */
+    color: #ffffff;
     font-size: 15px;
-    font-weight: 700;
-    letter-spacing: .3px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
     cursor: pointer;
-    box-shadow: 0 9px 20px rgba(6,69,127,.20);
-    transition: transform .2s ease, box-shadow .2s ease;
+    transition: all 0.2s ease;
   }
 
   .login-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 13px 25px rgba(6,69,127,.28);
+    background: #1e293b;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
   }
 
   .divider {
@@ -192,8 +175,9 @@
     align-items: center;
     gap: 12px;
     margin: 25px 0 20px;
-    color: #a3abb2;
+    color: #94a3b8;
     font-size: 12px;
+    font-weight: 500;
   }
 
   .divider::before,
@@ -201,45 +185,49 @@
     content: "";
     flex: 1;
     height: 1px;
-    background: #e3e7ea;
+    background: #e2e8f0;
   }
 
-  .signup-text {
-    text-align: center;
-    margin: 0;
-    color: #8b949c;
+  /* Secondary Button (Sign Up) - Made Clear Like Login */
+  .signup-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 52px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #0f172a;
     font-size: 15px;
-  }
-
-  .signup-text a {
-    color: #075e9e;
-    font-weight: 700;
+    font-weight: 600;
     text-decoration: none;
-    margin-left: 4px;
+    transition: all 0.2s ease;
   }
 
-  .signup-text a:hover {
-    text-decoration: underline;
+  .signup-button:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
   }
 
-  /* Bottom credit */
+  /* Bottom credit - Visibile on light background */
   .designer-credit {
     position: absolute;
-    z-index: 3;
-    bottom: 18px;
+    bottom: 20px;
     left: 0;
     right: 0;
     text-align: center;
-    color: rgba(255,255,255,.72);
-    font-size: 11px;
-    letter-spacing: 1.4px;
+    color: #64748b; /* Dark slate-grey for visibility */
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
     text-transform: uppercase;
   }
 
   /* Mobile */
   @media (max-width: 500px) {
     .login-page {
-      padding: 15px 15px 50px;
+      padding: 15px;
     }
 
     .school-header {
@@ -256,14 +244,12 @@
     }
 
     .login-title {
-      font-size: 32px;
+      font-size: 28px;
     }
   }
 </style>
 
 <div class="login-page">
-
-  <img src="{% static 'images/login-background.png' %}" alt="">
 
   <div class="login-wrapper">
 
@@ -320,10 +306,8 @@
 
         <div class="divider"><span>OR</span></div>
 
-        <p class="signup-text">
-          Don't have an account? 
-          <a href="{% url 'classroom:signup' %}">Sign up</a>
-        </p>
+        <!-- Sign up is now a prominent button -->
+        <a href="{% url 'classroom:signup' %}" class="signup-button">Create an account</a>
 
       </section>
     </div>
