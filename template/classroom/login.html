@@ -1,190 +1,488 @@
 {% extends 'classroom/base.html' %}
 {% load static %}
-
 {% block content %}
+
 <style>
-  :root {
-    --primary-blue: #0b2f64;
-    --accent-blue: #16468e;
-    --glass-bg: rgba(255, 255, 255, 0.22);
-    --glass-border: rgba(255, 255, 255, 0.35);
-    --text-white: #ffffff;
+  /* =========================================================
+     TRIED AND TESTED ACADEMY — MODERN LOGIN PAGE
+     CSS is intentionally kept inside this template.
+     ========================================================= */
+
+  .login-page {
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 30px 20px 72px;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background:
+      linear-gradient(135deg, rgba(5, 37, 76, .96), rgba(13, 91, 156, .90)),
+      url("{% static 'images/login-background.png' %}") center/cover no-repeat;
   }
 
-  /* Page container spacing to clear header and push footer to bottom */
-  .login-page-wrapper {
-    min-height: calc(100vh - 100px);
+  /* Background image is used through CSS so it does not disturb the layout. */
+  .login-page > img {
+    display: none;
+  }
+
+  .login-page::before {
+    content: "";
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .07);
+    top: -170px;
+    left: -120px;
+  }
+
+  .login-page::after {
+    content: "";
+    position: absolute;
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    background: rgba(52, 152, 219, .16);
+    right: -130px;
+    bottom: -140px;
+  }
+
+  .login-wrapper {
+    position: relative;
+    z-index: 2;
+    width: min(980px, 100%);
+  }
+
+  /* School name — kept clearly visible and contained at the top */
+  .school-header {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 22px;
+    padding: 0 10px;
+  }
+
+  .school-name {
+    margin: 0;
+    font-size: clamp(25px, 4vw, 42px);
+    line-height: 1.08;
+    letter-spacing: 2px;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-shadow: 0 3px 12px rgba(0, 0, 0, .25);
+  }
+
+  .school-tagline {
+    margin: 8px 0 0;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: .88;
+  }
+
+  .login-card {
+    min-height: 555px;
+    display: grid;
+    grid-template-columns: 43% 57%;
+    background: rgba(255, 255, 255, .98);
+    border-radius: 26px;
+    overflow: hidden;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, .28);
+  }
+
+  /* Left welcome panel — inspired by the second reference image */
+  .welcome-panel {
+    position: relative;
+    padding: 55px 42px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    color: #fff;
+    overflow: hidden;
+    background: linear-gradient(145deg, #063b78, #0b70b8);
+  }
+
+  .welcome-panel::before {
+    content: "";
+    position: absolute;
+    width: 330px;
+    height: 330px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.08);
+    top: -170px;
+    right: -140px;
+  }
+
+  .welcome-panel::after {
+    content: "";
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: rgba(0, 174, 239, .20);
+    bottom: -125px;
+    left: -115px;
+  }
+
+  .welcome-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .logo-ring {
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    background: #fff;
+    padding: 6px;
+    display: flex;
     align-items: center;
-    padding: 70px 20px 20px;
+    justify-content: center;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.18);
+  }
+
+  .logo-ring img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 50%;
+  }
+
+  .welcome-panel h2 {
+    margin: 0 0 12px;
+    font-size: 38px;
+    line-height: 1.05;
+    font-weight: 800;
+    letter-spacing: .5px;
+  }
+
+  .welcome-panel p {
+    margin: 0;
+    max-width: 320px;
+    line-height: 1.7;
+    font-size: 14px;
+    color: rgba(255,255,255,.88);
+  }
+
+  .welcome-line {
+    width: 55px;
+    height: 4px;
+    border-radius: 10px;
+    background: #fff;
+    margin: 22px 0;
+  }
+
+  .welcome-note {
+    font-size: 12px !important;
+    letter-spacing: .7px;
+    text-transform: uppercase;
+    opacity: .75;
+  }
+
+  /* Right login form */
+  .login-form {
+    padding: 48px clamp(28px, 5vw, 65px) 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     box-sizing: border-box;
   }
 
-  /* Glassmorphism Card */
-  .login-card {
-    position: relative;
-    width: 100%;
-    max-width: 380px;
-    background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border);
-    border-radius: 24px;
-    padding: 55px 28px 30px;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
-    color: var(--text-white);
-    margin: auto 0;
+  .login-title {
+    margin: 0;
+    color: #17212b;
+    font-size: 40px;
+    font-weight: 800;
+    letter-spacing: -.5px;
   }
 
-  /* Floating Avatar/Badge */
-  .avatar-badge {
-    position: absolute;
-    top: -45px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    background: #ffffff;
-    padding: 4px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  .login-subtitle {
+    margin: 7px 0 30px;
+    color: #89939d;
+    font-size: 13px;
   }
 
-  .avatar-badge img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-
-  .login-card h1 {
-    text-align: center;
-    font-size: 2rem;
+  .messages {
     margin-bottom: 20px;
-    font-weight: 700;
-    color: var(--text-white);
+  }
+
+  .messages .alert {
+    border-radius: 10px;
+    margin-bottom: 6px;
+    font-size: 13px;
   }
 
   .input-group {
-    margin-bottom: 18px;
+    position: relative;
+    margin-bottom: 20px;
   }
 
-  .input-group label {
+  .input-label {
     display: block;
-    font-size: 0.9rem;
-    margin-bottom: 6px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 8px;
+    color: #35404a;
+    font-size: 13px;
+    font-weight: 700;
   }
 
-  .input-group input[type="text"],
-  .input-group input[type="password"] {
+  .input-group input {
     width: 100%;
-    padding: 10px 12px;
-    border: none;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.6);
-    background: rgba(255, 255, 255, 0.12);
-    border-radius: 8px;
-    color: #ffffff;
-    font-size: 1rem;
-    outline: none;
-    transition: all 0.3s ease;
+    height: 52px;
     box-sizing: border-box;
+    border: 1px solid #e0e5ea;
+    border-radius: 10px;
+    background: #f6f8fa;
+    padding: 0 16px;
+    color: #1e2933;
+    font-size: 14px;
+    outline: none;
+    transition: .25s ease;
   }
 
   .input-group input::placeholder {
-    color: rgba(255, 255, 255, 0.65);
+    color: #a5adb5;
   }
 
   .input-group input:focus {
-    border-bottom-color: #ffffff;
-    background: rgba(255, 255, 255, 0.22);
+    background: #fff;
+    border-color: #0b66a9;
+    box-shadow: 0 0 0 4px rgba(11,102,169,.10);
   }
 
-  .btn-submit {
+  .login-button {
     width: 100%;
-    padding: 12px;
-    background-color: var(--primary-blue);
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    height: 52px;
+    margin-top: 5px;
+    border: 0;
     border-radius: 10px;
-    font-size: 1rem;
-    font-weight: 600;
+    background: linear-gradient(135deg, #06457f, #0878bd);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: .3px;
     cursor: pointer;
-    margin-top: 10px;
-    transition: background 0.3s ease;
+    box-shadow: 0 9px 20px rgba(6,69,127,.20);
+    transition: transform .2s ease, box-shadow .2s ease;
   }
 
-  .btn-submit:hover {
-    background-color: var(--accent-blue);
+  .login-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 13px 25px rgba(6,69,127,.28);
   }
 
-  .card-footer-link {
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 22px 0 17px;
+    color: #a3abb2;
+    font-size: 12px;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #e3e7ea;
+  }
+
+  .signup-text {
     text-align: center;
-    margin-top: 20px;
+    margin: 0;
+    color: #8b949c;
+    font-size: 13px;
   }
 
-  .card-footer-link a {
-    color: var(--text-white);
+  .signup-text a {
+    color: #075e9e;
+    font-weight: 700;
+    text-decoration: none;
+    margin-left: 4px;
+  }
+
+  .signup-text a:hover {
     text-decoration: underline;
-    font-size: 0.88rem;
-    opacity: 0.9;
   }
 
-  /* Bottom Credit Tag */
-  .site-footer {
+  /* Bottom credit */
+  .designer-credit {
+    position: absolute;
+    z-index: 3;
+    bottom: 18px;
+    left: 0;
+    right: 0;
     text-align: center;
-    padding: 20px 10px 10px;
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 0.85rem;
-    font-weight: 500;
-    letter-spacing: 0.8px;
+    color: rgba(255,255,255,.72);
+    font-size: 11px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+  }
+
+  /* Mobile */
+  @media (max-width: 760px) {
+    .login-page {
+      padding: 22px 14px 62px;
+      align-items: flex-start;
+    }
+
+    .school-header {
+      margin-bottom: 18px;
+    }
+
+    .school-name {
+      font-size: clamp(22px, 7vw, 31px);
+      letter-spacing: 1px;
+    }
+
+    .school-tagline {
+      font-size: 9px;
+      letter-spacing: 1.8px;
+    }
+
+    .login-card {
+      grid-template-columns: 1fr;
+      min-height: auto;
+      border-radius: 20px;
+    }
+
+    .welcome-panel {
+      padding: 30px 28px;
+      min-height: 205px;
+    }
+
+    .logo-ring {
+      width: 65px;
+      height: 65px;
+      margin-bottom: 17px;
+    }
+
+    .welcome-panel h2 {
+      font-size: 28px;
+    }
+
+    .welcome-panel p {
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .welcome-line,
+    .welcome-note {
+      display: none;
+    }
+
+    .login-form {
+      padding: 32px 25px 28px;
+    }
+
+    .login-title {
+      font-size: 32px;
+    }
+
+    .login-subtitle {
+      margin-bottom: 23px;
+    }
   }
 </style>
 
-<div class="login-page-wrapper">
-  <div class="login-card">
-    <div class="avatar-badge">
-      <img src="{% static 'images/login-avatar.png' %}" alt="Logo">
-    </div>
+<div class="login-page">
 
-    {% if messages %}
-    <div class="alert alert-primary alert-dismissible fade show" role="alert">
-      {% for message in messages %}
-        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message|safe }}</div>
-      {% endfor %}
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    {% endif %}
+  <!-- Existing background image is retained and used by the CSS above -->
+  <img src="{% static 'images/login-background.png' %}" alt="">
 
-    <h1>Login</h1>
+  <div class="login-wrapper">
 
-    <form action="{% url 'classroom:login' %}" method="post">
-      {% csrf_token %}
-      <div class="input-group">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" placeholder="Enter your username" required>
-      </div>
+    <!-- School name retained and resized responsively so it fits cleanly -->
+    <header class="school-header">
+      <h1 class="school-name">TRIED AND TESTED ACADEMY</h1>
+      <p class="school-tagline">Excellence • Discipline • Innovation</p>
+    </header>
 
-      <div class="input-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="Enter password" required>
-      </div>
+    <div class="login-card">
 
-      <input class="btn-submit" type="submit" value="Login">
-    </form>
+      <!-- Welcome / branding side -->
+      <section class="welcome-panel">
+        <div class="welcome-content">
 
-    <div class="card-footer-link">
-      <a href="{% url 'classroom:signup' %}">Don't have an account.</a>
+          <div class="logo-ring">
+            <img src="{% static 'images/login-avatar.png' %}" alt="School Logo">
+          </div>
+
+          <h2>Welcome Back</h2>
+          <div class="welcome-line"></div>
+
+          <p>
+            Access your student portal and continue your academic journey
+            with Tried and Tested Academy.
+          </p>
+
+          <p class="welcome-note">Your future starts with excellence.</p>
+        </div>
+      </section>
+
+      <!-- Login side -->
+      <section class="login-form">
+
+        <h2 class="login-title">Sign in</h2>
+        <p class="login-subtitle">Enter your details to access your account.</p>
+
+        {% if messages %}
+        <div class="messages">
+          {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-primary{% endif %}" role="alert">
+              {{ message|safe }}
+            </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <form action="{% url 'classroom:login' %}" method="post">
+          {% csrf_token %}
+
+          <div class="input-group">
+            <label class="input-label" for="username">Username</label>
+            <input
+              id="username"
+              type="text"
+              name="username"
+              placeholder="Enter your username"
+              autocomplete="username"
+              required
+            >
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              required
+            >
+          </div>
+
+          <button class="login-button" type="submit">Sign in</button>
+        </form>
+
+        <div class="divider"><span>OR</span></div>
+
+        <!-- Signup option intentionally retained -->
+        <p class="signup-text">
+          Don't have an account?
+          <a href="{% url 'classroom:signup' %}">Sign up</a>
+        </p>
+
+      </section>
     </div>
   </div>
 
-  <footer class="site-footer">
-    <p>Designed by Engineer Munashe</p>
-  </footer>
+  <div class="designer-credit">Designed by Chiporiro Munashe</div>
 </div>
+
 {% endblock %}
